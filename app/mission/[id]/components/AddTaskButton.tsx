@@ -370,7 +370,7 @@ export function AddTaskDrawer() {
                       {/* Count */}
                       <Field>
                         <FieldLabel htmlFor={`task-count-${task.id}`}>
-                          <FieldTitle>Count</FieldTitle>
+                          <FieldTitle>Quantity</FieldTitle>
                         </FieldLabel>
 
                         <FieldContent>

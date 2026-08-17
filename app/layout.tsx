@@ -5,6 +5,7 @@ import "./globals.css";
 import { SessionProvider } from "@/contexts/session-context";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import AppNavbar from "@/components/app-navbar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,8 +30,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased bg-background`}>
-        <div className="px-6 py-10 sm:px-10 lg:px-16">
+      <body className={`${geistSans.className} antialiased bg-background max-w-screen`}>
+        <div className="px-6 sm:px-10 lg:px-16">
           <SessionProvider>
             <ThemeProvider
               attribute="class"
@@ -39,7 +40,9 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <TooltipProvider>
-                {children}
+                <AppNavbar />
+
+                {children}  
                 <Toaster />
               </TooltipProvider>
             </ThemeProvider>

@@ -75,7 +75,7 @@ export default function NewMissionPage() {
 
   return (
     <main className="min-h-screen">
-      <div className="mx-auto w-full max-w-4xl">
+      <div className="mx-auto w-full">
         <div className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Create a new mission

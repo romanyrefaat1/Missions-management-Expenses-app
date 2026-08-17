@@ -12,7 +12,6 @@ export interface Mission {
   expected_budget: number | null;
   real_budget: number | null;
   current_paid: number | null;
-  image_url: string | null;
 }
 
 export type TaskState = "IN_PROGRESS" | "COMPLETED" | "PENDING";

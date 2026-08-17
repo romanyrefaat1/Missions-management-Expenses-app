@@ -8,6 +8,7 @@ import Link from "next/link";
 import TasksInMissionPage from "./TasksSectionInMissionPage";
 import EditBudgetButton from "./EditBudgetButton";
 import { useMission } from "@/contexts/mission-context";
+import { Suspense } from "react";
 
 {
   /* Budget */
@@ -54,7 +55,7 @@ export default function MissionPageClient() {
         : undefined,
     },
     {
-      title: "You paid in this mission",
+      title: "You spent on this mission",
       value: mission.current_paid || 0,
       warning: !mission.current_paid
         ? {
@@ -80,12 +81,12 @@ export default function MissionPageClient() {
     {
       type: "tasks-in-progress",
       title: "Tasks in progress",
-      value: tasks.length,
+      value: tasks.filter((item)=> item.state === "IN_PROGRESS" && item).length,
     },
   ];
 
   return (
-    <div>
+      <div>
       <h1>Mission: {mission.name}</h1>
       {mission.description !== null && (
         <p className="text-muted-foreground">{mission.description}</p>
@@ -121,16 +122,16 @@ export default function MissionPageClient() {
             <h3
               className={cn(
                 "mb-4 text-5xl font-normal",
-                el.value === "??" || el.value == null || el.value == 0
+                el.value === "N/A" || el.value == null || el.value == 0
                   ? "text-destructive"
                   : "",
               )}
             >
-              {el.value && el.value !== "??"
+              {el.value && el.value !== "N/A"
                 ? `${el.type !== "tasks-in-progress" ? "$" : ""}${el.value}`
                 : el.value == 0
                   ? `${el.type !== "tasks-in-progress" && "$"}${0}`
-                  : "??"}
+                  : "N/A"}
               {/* $20 */}
             </h3>
 

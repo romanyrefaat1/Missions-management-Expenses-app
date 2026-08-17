@@ -93,12 +93,12 @@ export function MissionProvider({ children, missionId }: MissionProviderProps) {
           } else if (payload.eventType === "DELETE") {
             setTasks((prev) => prev.filter((el) => el.id !== payload.old.id));
           } else if (payload.eventType === "UPDATE") {
-            setTasks((prev) =>
-              prev.map((el) =>
-                el.id === payload.old.id ? payload.new : payload.old,
-              ),
-            );
-          }
+  setTasks((prev) =>
+    prev.map((el) =>
+      el.id === payload.new.id ? payload.new as Task : el,
+    ),
+  );
+}
         },
       )
       .subscribe();

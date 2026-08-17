@@ -24,11 +24,14 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const supabase = createClient();
+
     setIsLoading(true);
     setError(null);
 
@@ -37,74 +40,129 @@ export function LoginForm({
         email,
         password,
       });
+
       if (error) throw error;
-      // Update this route to redirect to an authenticated route. The user already has an active session.
+
       router.push("/home");
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
+      setError(
+        error instanceof Error ? error.message : "An error occurred"
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
+  const form = (
+    <form onSubmit={handleLogin}>
+      <div className="space-y-5">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+
+          <Input
+            id="email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-11"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-3">
+            <Label htmlFor="password">Password</Label>
+
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <Input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-11"
+          />
+        </div>
+
+        {error && (
+          <div
+            role="alert"
+            className="rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2.5 text-sm text-destructive"
+          >
+            {error}
+          </div>
+        )}
+
+        <Button
+          type="submit"
+          className="h-11 w-full"
+          disabled={isLoading}
+        >
+          {isLoading ? "Logging in..." : "Login"}
+        </Button>
+      </div>
+
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/auth/sign-up"
+          className="font-medium text-foreground underline underline-offset-4 hover:no-underline"
+        >
+          Sign up
+        </Link>
+      </p>
+    </form>
+  );
+
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="/auth/forgot-password"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
-            </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link
-                href="/auth/sign-up"
-                className="underline underline-offset-4"
-              >
-                Sign up
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+    <div
+      className={cn("w-full", className)}
+      {...props}
+    >
+      {/* MOBILE */}
+      <div className="flex min-h-dvh w-full flex-col px-5 py-8 sm:hidden">
+        <div className="mb-10 pt-4">
+          <h1 className="text-3xl font-semibold tracking-tight">
+            Welcome back
+          </h1>
+
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            Log in to continue to your account.
+          </p>
+        </div>
+
+        {form}
+      </div>
+
+      {/* DESKTOP */}
+      <div className="hidden min-h-dvh items-center justify-center px-6 sm:flex">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-2xl">
+              Login
+            </CardTitle>
+
+            <CardDescription>
+              Enter your email and password to access your account.
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            {form}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
