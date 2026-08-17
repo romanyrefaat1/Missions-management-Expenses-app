@@ -21,12 +21,10 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-type DropdownMenuTypes = "DATE" | "IS_COMPLETED" | "STATE";
+import { FilterTasksOptions, useFilteredTasks } from "../../contexts/filtered-tasks-context";
 
 export function FilterDropDown() {
-  const [filterType, setFilterType] =
-    React.useState<DropdownMenuTypes>("IS_COMPLETED");
+  const {filterType, setFilterType} = useFilteredTasks()
 
   return (
     <DropdownMenu>

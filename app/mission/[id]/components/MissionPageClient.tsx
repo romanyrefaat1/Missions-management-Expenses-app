@@ -9,6 +9,8 @@ import TasksInMissionPage from "./TasksSectionInMissionPage";
 import EditBudgetButton from "./EditBudgetButton";
 import { useMission } from "@/contexts/mission-context";
 import { Suspense } from "react";
+import { useRouter } from "next/navigation";
+import { MissionsDropdown } from "./MissionsDropdown";
 
 {
   /* Budget */
@@ -28,6 +30,7 @@ import { Suspense } from "react";
 
 export default function MissionPageClient() {
   const { mission, loading, error, tasks } = useMission();
+  const router = useRouter()
 
   if (loading) return;
   if (error) {
@@ -87,7 +90,22 @@ export default function MissionPageClient() {
 
   return (
       <div>
-      <h1>Mission: {mission.name}</h1>
+      <div className="flex items-center gap-3">
+  <h1 className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-3">
+  <span className="text-3xl font-bold tracking-tight sm:text-4xl">
+    Mission: {mission.name}
+  </span>
+
+  <div className="self-start lg:self-auto">
+    <MissionsDropdown
+      currentMission={mission.name}
+      onChange={(missionId) => router.push(`/mission/${missionId}`)}
+      isCurrentMission={false}
+      trigger_value="Switch Mission"
+    />
+  </div>
+</h1>
+</div>
       {mission.description !== null && (
         <p className="text-muted-foreground">{mission.description}</p>
       )}
@@ -122,15 +140,12 @@ export default function MissionPageClient() {
             <h3
               className={cn(
                 "mb-4 text-5xl font-normal",
-                el.value === "N/A" || el.value == null || el.value == 0
-                  ? "text-destructive"
-                  : "",
               )}
             >
               {el.value && el.value !== "N/A"
                 ? `${el.type !== "tasks-in-progress" ? "$" : ""}${el.value}`
                 : el.value == 0
-                  ? `${el.type !== "tasks-in-progress" && "$"}${0}`
+                  ? `${el.type !== "tasks-in-progress" ? "$":""}${0}`
                   : "N/A"}
               {/* $20 */}
             </h3>

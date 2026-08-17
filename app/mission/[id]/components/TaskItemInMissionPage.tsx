@@ -9,6 +9,7 @@ import {
   Hash,
   Wallet,
   CircleDollarSign,
+  Trash,
 } from "lucide-react";
 
 import { Task } from "@/types/types";
@@ -38,6 +39,7 @@ import CompletedToggleButton from "@/components/completed-toggle-button";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { DeleteTaskDialog } from "./DeleteTaskDialog";
+import { MyAlert } from "@/components/my-alert";
 
 export default function TaskItemInMissionPage({
   taskData,
@@ -125,7 +127,7 @@ export default function TaskItemInMissionPage({
         )}
       >
         <CardContent className="p-0">
-          <div className="flex min-h-32 items-stretch">
+          <div className="flex min-h-32 items-stretch flex-col lg:flex-row pt-5 lg:pt-0">
             {/* Completion */}
             <div className="flex shrink-0 items-center px-4">
               <CompletedToggleButton
@@ -157,39 +159,10 @@ export default function TaskItemInMissionPage({
                   )}
                 </div>
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="size-8 shrink-0 text-muted-foreground"
-                    >
-                      <MoreHorizontal className="size-4" />
-
-                      <span className="sr-only">Task actions</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>
-                      <Pencil className="mr-2 size-4" />
-                      Edit task
-                    </DropdownMenuItem>
-
-                    <DropdownMenuSeparator />
-
-                    <DropdownMenuItem
-                      className="text-destructive focus:text-destructive"
-                      onSelect={(event) => {
-                        event.preventDefault();
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="mr-2 size-4" />
-                      Delete task
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex gap-2 border bg-accent p-1 rounded-xl">
+                  <Button variant="ghost" size={"icon-sm"}><Pencil /></Button>
+                  <Button variant={"ghost"} size={"icon-sm"}><Trash2 /></Button>
+                </div>
               </div>
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
@@ -240,9 +213,12 @@ export default function TaskItemInMissionPage({
             </div>
           </div>
         </CardContent>
+        <div className="mb-2 p-2">
+          {taskData.is_completed && (taskData.paid_price === 0 || taskData.paid_price === null || taskData.paid_price === undefined) ? 
+          <MyAlert variant="warning" title="You must set how much you paid for this task" action={<Button size={"sm"} variant={"outline"}>Set paid price</Button>}/> : <></>}
+        </div>
       </Card>
 
-      {/* Dialog lives OUTSIDE the DropdownMenu */}
       <DeleteTaskDialog
         taskId={taskData.id}
         open={deleteDialogOpen}

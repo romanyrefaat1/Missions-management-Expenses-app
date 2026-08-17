@@ -55,6 +55,7 @@ export function MissionProvider({ children, missionId }: MissionProviderProps) {
         toast.error(`Error fetching mission data: ${missionError.message}`);
       } else {
         setMission(missionData);
+        console.log("MissionData:", missionData)
       }
 
       if (tasksError) {

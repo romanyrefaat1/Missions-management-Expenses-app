@@ -129,6 +129,7 @@ export default async function HomePage() {
               </Card>
 
               <div className="flex justify-end">
+                
                 <Link href={`/mission/${mission.id}`}>
                   <Button variant={"primary"}>View Mission</Button>
                 </Link>

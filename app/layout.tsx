@@ -6,6 +6,8 @@ import { SessionProvider } from "@/contexts/session-context";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AppNavbar from "@/components/app-navbar";
+import { MissionsAllProvider } from "@/contexts/missions-all-context";
+import { Suspense } from "react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -30,9 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased bg-background max-w-screen`}>
-        <div className="px-6 sm:px-10 lg:px-16">
+      <body className={`${geistSans.className} antialiased bg-background max-w-screen overflow-x-clip`}>
+        <div className="px-6 pb-8 sm:px-10 lg:px-16 w-full min-w-0">
           <SessionProvider>
+            <MissionsAllProvider>
             <ThemeProvider
               attribute="class"
               defaultTheme="system"
@@ -40,12 +43,13 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <TooltipProvider>
-                <AppNavbar />
+                <Suspense fallback={<div>Loading</div>}><AppNavbar /></Suspense>
 
                 {children}  
                 <Toaster />
               </TooltipProvider>
             </ThemeProvider>
+            </MissionsAllProvider>
           </SessionProvider>
         </div>
       </body>

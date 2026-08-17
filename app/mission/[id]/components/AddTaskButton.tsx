@@ -106,6 +106,10 @@ export function AddTaskDrawer() {
     setExpandedTask(tasks.length);
   }
 
+  const handleDeleteTask = (taskId: string)=> {
+    setTasks(tasks => tasks.filter(el=> el.id !== taskId))
+  }
+
   async function handleSubmit() {
     // Make sure every task has a name
     const invalidTask = tasks.findIndex((task) => !task.name.trim());
@@ -194,18 +198,17 @@ export function AddTaskDrawer() {
   }
 
   return (
-    <Drawer
-      open={open}
-      onOpenChange={setOpen}
-      showSwipeHandle={isMobile}
-      direction={isMobile ? "down" : "right"}
-      swipeDirection={isMobile ? "down" : "right"}
-    >
+      <Drawer
+  open={open}
+  onOpenChange={setOpen}
+  direction="right"
+  swipeDirection="right"
+>
       <DrawerTrigger asChild>
         <Button variant="primary">Add Task</Button>
       </DrawerTrigger>
 
-      <DrawerContent>
+      <DrawerContent className="mt-12 mr-5">
         <DrawerHeader>
           <DrawerTitle>Add tasks to {mission.name}</DrawerTitle>
 
@@ -242,9 +245,9 @@ export function AddTaskDrawer() {
                         )}
                       </div>
 
-                      <span className="ml-4 shrink-0 text-xs text-muted-foreground">
-                        Task {index + 1}
-                      </span>
+                      <Button onClick={()=> handleDeleteTask(task.id)} variant="secondary" size="sm" className="ml-4 shrink-0 text-xs text-muted-foreground">
+                        Remove Task
+                      </Button>
                     </Button>
                   )}
 
