@@ -26,7 +26,7 @@ export function MissionsDropdown({
   currentMission,
   onChange,
   isCurrentMission = true,
-  trigger_value,
+  trigger_value = "Switch Mission",
 }: MissionsDropdownProps) {
   const { allMissions } = useMissionsAll();
 
@@ -40,9 +40,9 @@ export function MissionsDropdown({
       onValueChange={onChange}
     >
       <SelectTrigger className="border-0 bg-transparent p-2 shadow-none">
-        <SelectValue
-          placeholder={isCurrentMission ? currentMission : trigger_value}
-        />
+        <SelectValue>
+          {trigger_value}
+        </SelectValue>
       </SelectTrigger>
 
       <SelectContent>

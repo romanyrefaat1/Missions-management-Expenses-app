@@ -9,12 +9,18 @@ import React, {
 } from "react";
 
 import { useMission } from "@/contexts/mission-context";
-import type { Task, TaskState } from "@/types/types";
+import type { Task } from "@/types/types";
 
-export type FilterTasksOptions = "DATE" | "IS_COMPLETED" | "STATE";
-
+export type FilterTasksOptions =
+  | "DATE"
+  | "IS_COMPLETED"
+  | "STATE";
 
 export type FilteredTasksResult =
+  | {
+      type: "SEARCH";
+      tasks: Task[];
+    }
   | {
       type: "DATE";
       tasks: Task[];
@@ -33,7 +39,9 @@ export type FilteredTasksResult =
 
 interface FilteredTasksContextValue {
   filteredTasks: FilteredTasksResult;
+
   filterType: FilterTasksOptions;
+
   searchKeyword: string;
 
   setFilterType: React.Dispatch<
@@ -63,28 +71,46 @@ const FilteredTasksProvider = ({
   const filteredTasks = useMemo<FilteredTasksResult>(() => {
     let result = [...tasks];
 
-    /* Search */
+    /*
+     * SEARCH
+     */
+    const keyword = searchKeyword.trim().toLowerCase();
 
-    if (searchKeyword.trim()) {
-      const keyword = searchKeyword.trim().toLowerCase();
-
+    if (keyword) {
       result = result.filter((task) => {
+        const name = task.name?.toLowerCase() ?? "";
+
+        const description =
+          task.description?.toLowerCase() ?? "";
+
+        const count =
+          task.count != null
+            ? String(task.count).toLowerCase()
+            : "";
+
         return (
-          task.name.toLowerCase().includes(keyword) ||
-          task.description?.toLowerCase().includes(keyword) ||
-          String(task.count).includes(keyword)
+          name.includes(keyword) ||
+          description.includes(keyword) ||
+          count.includes(keyword)
         );
       });
+
+      return {
+        type: "SEARCH",
+        tasks: result,
+      };
     }
 
-    /* DATE */
-
+    /*
+     * DATE
+     */
     if (filterType === "DATE") {
-      result.sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() -
-          new Date(a.created_at).getTime()
-      );
+      result.sort((a, b) => {
+        const dateA = new Date(a.created_at).getTime();
+        const dateB = new Date(b.created_at).getTime();
+
+        return dateB - dateA;
+      });
 
       return {
         type: "DATE",
@@ -92,8 +118,9 @@ const FilteredTasksProvider = ({
       };
     }
 
-    /* IS_COMPLETED */
-
+    /*
+     * IS_COMPLETED
+     */
     if (filterType === "IS_COMPLETED") {
       const completed: Task[] = [];
       const not_completed: Task[] = [];
@@ -113,8 +140,9 @@ const FilteredTasksProvider = ({
       };
     }
 
-    /* STATE */
-
+    /*
+     * STATE
+     */
     const pending: Task[] = [];
     const in_progress: Task[] = [];
     const completed: Task[] = [];

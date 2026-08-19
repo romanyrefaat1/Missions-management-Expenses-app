@@ -17,6 +17,7 @@ interface MissionContextType {
   tasks: Task[];
   loading: boolean;
   error: string | null;
+  editMission: (data: Partial<Mission> & { missionId: Mission["id"] })=> void;
 }
 
 interface MissionProviderProps {
@@ -128,6 +129,24 @@ export function MissionProvider({ children, missionId }: MissionProviderProps) {
     };
   }, [missionId]);
 
+  const editMission = async (
+  data: Partial<Mission> & { missionId: Mission["id"] }
+) => {
+  const supabase = createClient();
+
+  const { missionId, ...updates } = data;
+
+  const { error } = await supabase
+    .from("missions")
+    .update(updates)
+    .eq("id", missionId);
+
+  if (error) {
+    toast.error(`Error editing mission: ${error.message}`)
+    console.error(`Error editing mission: ${error.message}`)
+  }
+};
+
   return (
     <MissionContext.Provider
       value={{
@@ -135,6 +154,7 @@ export function MissionProvider({ children, missionId }: MissionProviderProps) {
         tasks,
         loading,
         error,
+        editMission
       }}
     >
       {children}

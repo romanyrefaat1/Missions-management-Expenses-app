@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,13 +17,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { useSession } from "@/contexts/session-context";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Mission } from "@/types/types";
+import { useMissionsAll } from "@/contexts/missions-all-context";
+import Link from "next/link";
 
-export default function NewMissionPage() {
-  const { session, loading } = useSession();
+export default function NewMissionPage({}) {
+
+  const searchParams = useSearchParams();
+
+  const missionId = searchParams.get("missionId")
+  const isEdit = searchParams.get("edit")
+  const {getMissionById, loading: missionLoading} = useMissionsAll()
+  
+  const { session, loading: sessionLoading } = useSession();
 
   const router = useRouter();
+
+  const [missionData, setMissionData] = useState<Mission | null | undefined>(null)
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,6 +44,30 @@ export default function NewMissionPage() {
     expected_budget: null,
     real_budget: null,
   });
+
+  useEffect(()=> {
+
+    const handleEditData = ()=> {
+      if (missionId && isEdit) {
+      const mission = getMissionById(missionId)
+
+      console.log("Mission", mission)
+
+      setMissionData(mission)
+      setFormData({
+        name: mission?.name,
+        description: mission?.description,
+        is_completed: mission?.is_completed,
+        state: mission?.state,
+        expected_budget: mission?.expected_budget,
+        real_budget: mission?.real_budget
+      })
+    }
+    }
+
+    handleEditData()
+
+  }, [isEdit, missionId, missionLoading])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -55,6 +90,9 @@ export default function NewMissionPage() {
 
     const supabsase = createClient();
 
+
+    if (!isEdit) {
+
     const { error, data }: { error: any; data: Mission | null } =
       await supabsase
         .from("missions")
@@ -71,6 +109,24 @@ export default function NewMissionPage() {
     console.log(formData);
     toast.success("Mission Created successfully! Routing to add tasks");
     router.push(`/mission/${data.id}`);
+    return;
+    }
+
+    const { error }: { error: any; data: Mission | null } =
+      await supabsase
+        .from("missions")
+        .update({ ...formData, user_id: session?.user.id })
+        .eq("id", missionId)
+
+    if (error) {
+      toast.error(`Error editing mission: ${error.message}`);
+      console.error("Error updating mission:", error.message);
+      return;
+    }
+
+    console.log(formData);
+    toast.success("Mission Edited successfully! Routing to add tasks");
+    router.push(`/mission/${missionId}`);
   };
 
   return (
@@ -78,11 +134,11 @@ export default function NewMissionPage() {
       <div className="mx-auto w-full">
         <div className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Create a new mission
+            {!isEdit ?  "Create a new mission" : <>Edit your <Link className="italic" href={`/mission/${missionId}`}>Mission</Link></>}
           </h1>
 
           <p className="mt-2 text-muted-foreground">
-            Add the details for your new mission.
+            Edit the details for this mission.
           </p>
         </div>
 
@@ -206,7 +262,7 @@ export default function NewMissionPage() {
           {/* Submit */}
           <div className="flex justify-end border-t pt-6">
             <Button type="submit" size="lg">
-              Create mission
+              {!isEdit ? "Create": "Edit"} mission
             </Button>
           </div>
         </form>

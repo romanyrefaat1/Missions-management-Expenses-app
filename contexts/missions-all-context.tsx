@@ -16,6 +16,7 @@ import type { Mission } from "@/types/types";
 interface MissionsAllContextValue {
   allMissions: Mission[];
   loading: boolean;
+  getMissionById: (missionId: string) => Mission | undefined;
   refreshMissions: () => Promise<void>;
 }
 
@@ -34,6 +35,17 @@ export function MissionsAllProvider({
   const [loading, setLoading] = useState<boolean>(true);
 
   const supabase = useMemo(() => createClient(), []);
+
+  const getMissionById = useCallback(
+  (missionId: string): Mission | undefined => {
+    if (loading) {
+      return undefined;
+    }
+
+    return allMissions.find((el) => el.id === missionId);
+  },
+  [allMissions, loading]
+);
 
   const fetchMissions = useCallback(async (): Promise<void> => {
     setLoading(true);
@@ -178,13 +190,14 @@ export function MissionsAllProvider({
   }, [fetchMissions, supabase]);
 
   const value = useMemo<MissionsAllContextValue>(
-    () => ({
-      allMissions,
-      loading,
-      refreshMissions: fetchMissions,
-    }),
-    [allMissions, loading, fetchMissions]
-  );
+  () => ({
+    allMissions,
+    loading,
+    getMissionById,
+    refreshMissions: fetchMissions,
+  }),
+  [allMissions, loading, getMissionById, fetchMissions]
+);
 
   return (
     <MissionsAllContext.Provider value={value}>
