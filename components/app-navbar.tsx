@@ -23,29 +23,29 @@ import { usePathname } from "next/navigation";
 const links = [
   {
     href: "/home",
-    label: "Home",
+    // label: "Home",
     icon: House,
   },
-  {
-    href: "/missions",
-    label: "Missions",
-    icon: ListChecks,
-  },
+  // {
+  //   href: "/missions",
+  //   label: "Missions",
+  //   icon: ListChecks,
+  // },
   {
     href: "/new-mission",
     label: "New Mission",
     icon: PlusCircle,
   },
-  {
-    href: "/on-the-go",
-    label: "On the Go",
-    icon: Navigation,
-  },
-  {
-    href: "/feedback",
-    label: "Feedback",
-    icon: MessageSquare,
-  },
+  // {
+  //   href: "/on-the-go",
+  //   label: "On the Go",
+  //   icon: Navigation,
+  // },
+  // {
+  //   href: "/feedback",
+  //   label: "Feedback",
+  //   icon: MessageSquare,
+  // },
 ];
 
 export default function AppNavbar() {

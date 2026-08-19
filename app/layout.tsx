@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Fraunces, Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { SessionProvider } from "@/contexts/session-context";
@@ -25,6 +25,12 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  display: "swap",
+  subsets: ["latin"],
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased bg-background max-w-screen overflow-x-clip`}>
+      <body className={`${geistSans.className} ${fraunces.variable} antialiased bg-background max-w-screen overflow-x-clip`}>
         <div className="px-6 pb-8 sm:px-10 lg:px-16 w-full min-w-0">
           <SessionProvider>
             <MissionsAllProvider>

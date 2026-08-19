@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -68,8 +69,8 @@
     --accent-foreground: 213 94% 75%;
 
     --destructive: 0 62.8% 40.6%;
---destructive-text: 0 72% 60%;
---destructive-foreground: 0 0% 98%;
+    --destructive-text: 0 72% 60%;
+    --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
@@ -91,33 +92,48 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-sans), sans-serif;
+    font-family: var(--font-geist-sans), sans-serif;
     line-height: 1.6;
   }
 
   /* Headings */
   h1 {
     @apply text-4xl font-bold tracking-tight;
+    font-family: var(--font-fraunces);
   }
 
   h2 {
     @apply text-3xl font-semibold tracking-tight;
+    font-family: var(--font-fraunces);
   }
 
   h3 {
     @apply text-2xl font-semibold tracking-tight;
+    font-family: var(--font-fraunces);
   }
 
   h4 {
     @apply text-xl font-semibold;
+    font-family: var(--font-fraunces);
   }
 
   h5 {
     @apply text-lg font-semibold;
+    font-family: var(--font-fraunces);
   }
 
   h6 {
     @apply text-base font-semibold;
+    font-family: var(--font-fraunces);
+  }
+
+  /* Font override utilities */
+  .font-heading {
+    font-family: var(--font-fraunces);
+  }
+
+  .font-body {
+    font-family: var(--font-geist-sans), sans-serif;
   }
 
   /* Text */
@@ -221,42 +237,42 @@
   --invert-foreground: var(--color-zinc-50);
 }
 
-  /* Scrollbars */
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--border)) transparent;
-  }
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) transparent;
+}
 
-  *::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
-  *::-webkit-scrollbar-track {
-    background: transparent;
-  }
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  *::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border-radius: 9999px;
-  }
+*::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
 
-  *::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary));
-  }
+*::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
 
-  *::-webkit-scrollbar-corner {
-    background: transparent;
-  }
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
 
-  .dark * {
-    scrollbar-color: hsl(var(--border)) transparent;
-  }
+.dark * {
+  scrollbar-color: hsl(var(--border)) transparent;
+}
 
-  .dark *::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-  }
+.dark *::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+}
 
-  .dark *::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--primary));
-  }
+.dark *::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}

@@ -121,8 +121,8 @@ export default function TaskItemInMissionPage({
     <>
       <Card
         className={cn(
-          "group relative overflow-hidden p-0 transition-colors hover:bg-muted/20",
-          completed && "bg-muted/25",
+          "group relative overflow-hidden p-0 transition-colors bg-muted/80 hover:bg-muted/20",
+          completed && "bg-muted/25 hover:bg-muted/15",
         )}
       >
         {/* Completion state accent bar */}

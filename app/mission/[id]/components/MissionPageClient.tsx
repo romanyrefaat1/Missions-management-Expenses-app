@@ -73,7 +73,7 @@ export default function MissionPageClient() {
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-3">
           <h1>
-            Mission: {mission.name}
+            <span className={"font-body"}>Mission:</span> {mission.name}
           </h1>
 
           <MissionsDropdown
@@ -81,7 +81,8 @@ export default function MissionPageClient() {
             onChange={(missionId) => router.push(`/mission/${missionId}`)}
           />
 
-          <MissionActionsDropDown missionId={mission.id} />
+          <MissionActionsDropDown missionId={mission.id
+          } />
         </div>
 
         {mission.description && (
@@ -111,8 +112,8 @@ export default function MissionPageClient() {
             className="bg-card p-5 flex flex-col justify-between hover:bg-muted/50 transition-colors"
           >
             <div>
-              <p className="text-sm font-medium text-muted-foreground">{el.title}</p>
-              <h2 className="mt-2 text-4xl font-light sm:text-5xl">
+              <p className="text-sm font-medium text-muted-foreground/30">{el.title}</p>
+              <h2 className="mt-2 text-6xl font-light md:text-6xl lg:mt-4 font-body">
                 {el.value !== null && el.value !== undefined
                   ? `${el.type !== "tasks-in-progress" ? "$" : ""}${el.value}`
                   : "N/A"}
