@@ -1337,45 +1337,6 @@ export default function OnTheGoPage() {
               Exit mission
             </Button>
           </Link>
-
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="outline"
-                className="gap-2"
-              >
-                <Pause className="h-4 w-4" />
-                Pause
-              </Button>
-            </AlertDialogTrigger>
-
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Pause mission?
-                </AlertDialogTitle>
-
-                <AlertDialogDescription>
-                  You can resume this mission anytime
-                  from the mission page.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-
-              <div className="flex gap-2">
-                <AlertDialogCancel>
-                  Cancel
-                </AlertDialogCancel>
-
-                <AlertDialogAction asChild>
-                  <Link
-                    href={`/mission/${mission.id}`}
-                  >
-                    <Button>Pause</Button>
-                  </Link>
-                </AlertDialogAction>
-              </div>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       </div>
     </div>

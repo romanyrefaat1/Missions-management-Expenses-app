@@ -40,12 +40,16 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { DeleteTaskDialog } from "./DeleteTaskDialog";
 import { MyAlert } from "@/components/my-alert";
+import EditTaskButton from "./EditTaskButton";
 
 export default function TaskItemInMissionPage({
   taskData,
 }: {
   taskData: Task;
 }) {
+
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState<boolean>(false)
+  
   const [isCompleted, setIsCompleted] = useState(
     taskData.is_completed ?? false,
   );
@@ -160,10 +164,11 @@ export default function TaskItemInMissionPage({
                 </div>
 
                 <div className="flex gap-2 border bg-accent p-1 rounded-xl">
-                  <Button variant="ghost" size={"icon-sm"}><Pencil /></Button>
-                  <Button variant={"ghost"} size={"icon-sm"}><Trash2 /></Button>
+                  <EditTaskButton task={taskData} />
+                  <Button className="hover:text-destructive-text hover:bg-destructive/30" variant="ghost" size={"icon-sm"} onClick={() => setIsDeleteAlertOpen(true)}><Trash2 /></Button>
                 </div>
               </div>
+                  <DeleteTaskDialog onOpenChange={()=> {setIsDeleteAlertOpen((prev)=> !prev)}} open={isDeleteAlertOpen} taskId={taskData.id} />
 
               <div className="mt-5 flex flex-wrap items-center gap-2">
                 <Badge variant={status.variant}>{status.label}</Badge>

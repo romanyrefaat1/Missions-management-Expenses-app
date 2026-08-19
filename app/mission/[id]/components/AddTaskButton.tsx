@@ -31,7 +31,7 @@ import {
 } from "@/components/ui/select";
 
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Mission, TaskState } from "@/types/types";
+import { Mission, Task, TaskState } from "@/types/types";
 import { createClient } from "@/lib/supabase/client";
 import { CompletedToggle } from "@/components/completed-toggle";
 import { useSession } from "@/contexts/session-context";
@@ -65,22 +65,53 @@ function createEmptyTask(): TaskDraft {
   };
 }
 
-export function AddTaskDrawer() {
+export function AddTaskDrawer({isEdit=false, task=null, editTaskButtonText="Edit" }: {isEdit: boolean, task: Task, editTaskButtonText: string | React.ReactElement}) {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const { session } = useSession();
   const { mission } = useMission();
 
-  const [tasks, setTasks] = React.useState<TaskDraft[]>([createEmptyTask()]);
+const [tasks, setTasks] = React.useState<TaskDraft[]>([
+  !isEdit
+    ? createEmptyTask()
+    : {
+        id: task.id,
+        name: task.name,
+        description: task.description || "",
+        expectedPrice: String(task.expected_price ?? ""),
+        paidPrice: String(task.paid_price ?? ""),
+        count: String(task.count ?? ""),
+        state: task.state,
+        isCompleted: task.is_completed ?? false,
+      },
+]);
 
   const [expandedTask, setExpandedTask] = React.useState(0);
 
   const isMobile = useIsMobile();
 
-  function resetForm() {
+  function resetForm(formattedTasks) {
+  if (!isEdit) {
     setTasks([createEmptyTask()]);
-    setExpandedTask(0);
+  } else {
+    const formattedTask = formattedTasks[0];
+
+    setTasks([
+      {
+        id: formattedTask.id,
+        name: formattedTask.name,
+        description: formattedTask.description || "",
+        expectedPrice: String(formattedTask.expected_price ?? ""),
+        paidPrice: String(formattedTask.paid_price ?? ""),
+        count: String(formattedTask.count ?? ""),
+        state: formattedTask.state,
+        isCompleted: formattedTask.is_completed ?? false,
+      },
+    ]);
   }
+
+  setExpandedTask(0);
+}
 
   function updateTask(index: number, updates: Partial<TaskDraft>) {
     setTasks((current) =>
@@ -122,28 +153,37 @@ export function AddTaskDrawer() {
       return;
     }
 
+    if (!mission || !session?.user) {
+
+      console.error("Error loading mission or user")
+      toast.error("Error loading mission or user")
+
+      return;
+    }
+
     const formattedTasks = tasks.map((task) => {
-      const expectedPrice =
-        task.expectedPrice.trim() !== "" ? Number(task.expectedPrice) : null;
+  const expectedPrice =
+    task.expectedPrice.trim() !== "" ? Number(task.expectedPrice) : null;
 
-      const paidPrice =
-        task.paidPrice.trim() !== "" ? Number(task.paidPrice) : null;
+  const paidPrice =
+    task.paidPrice.trim() !== "" ? Number(task.paidPrice) : null;
 
-      const count = task.count.trim() !== "" ? Number(task.count) : null;
+  const count =
+    task.count.trim() !== "" ? Number(task.count) : null;
 
-      return {
-        user_id: session?.user.id,
-        name: task.name.trim(),
-        description: task.description.trim() || null,
-        expected_price: expectedPrice,
-        paid_price: paidPrice,
-        count,
-        state: task.state,
-        is_completed: task.isCompleted,
-        mission: mission.id,
-      };
-    });
-
+  return {
+    id: task.id,
+    user_id: session.user.id,
+    name: task.name.trim(),
+    description: task.description.trim() || null,
+    expected_price: expectedPrice,
+    paid_price: paidPrice,
+    count,
+    state: task.state,
+    is_completed: task.isCompleted,
+    mission: mission.id,
+  };
+});
     // Validate optional numeric values
     for (let i = 0; i < formattedTasks.length; i++) {
       const task = formattedTasks[i];
@@ -177,13 +217,15 @@ export function AddTaskDrawer() {
 
     const supabase = createClient();
 
-    const { error } = await supabase.from("tasks").insert(formattedTasks);
+    if (!isEdit) {
+
+    const { error: addTaskError } = await supabase.from("tasks").insert(formattedTasks);
 
     setLoading(false);
 
-    if (error) {
-      console.error("Error creating tasks:", error);
-      toast.error(`Error creating tasks: ${error.message}`);
+    if (addTaskError) {
+      console.error("Error creating tasks:", addTaskError.message);
+      toast.error(`Error creating tasks: ${addTaskError.message}`);
       return;
     }
 
@@ -195,7 +237,28 @@ export function AddTaskDrawer() {
 
     resetForm();
     setOpen(false);
+    return;
+
+}
+
+const {error: editingTaskError} = await supabase.from("tasks").update({
+  ...formattedTasks[0]
+}).eq(("id"), task.id)
+
+if (editingTaskError) {
+  console.error(`Error editing task: ${editingTaskError.message}`)
+  toast.error(`Error editing task: ${editingTaskError.message}`)
+  return;
+}
+
+    toast.success("Task edited");
+
+resetForm(formattedTasks);
+
+setOpen(false);
+setLoading(false);
   }
+
 
   return (
       <Drawer
@@ -205,15 +268,17 @@ export function AddTaskDrawer() {
   swipeDirection="right"
 >
       <DrawerTrigger asChild>
-        <Button variant="primary">Add Task</Button>
+        <Button variant={!isEdit ? "primary" : "ghost"}>{!isEdit ? "Add Task": editTaskButtonText}</Button>
       </DrawerTrigger>
 
-      <DrawerContent className="mt-12 mr-5">
+      <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Add tasks to {mission.name}</DrawerTitle>
+          <DrawerTitle>{
+            !isEdit ? `Add tasks to ${mission.name}` : `Edit a task on mission: ${mission.name}` 
+}</DrawerTitle>
 
           <DrawerDescription>
-            Add one or multiple tasks to this mission.
+            {!isEdit ? "Add one or multiple tasks to this mission." : "Edit your task for this mission"}
           </DrawerDescription>
         </DrawerHeader>
 
@@ -446,7 +511,7 @@ export function AddTaskDrawer() {
             })}
 
             {/* Add another task */}
-            <Button
+            {!isEdit && <Button
               type="button"
               variant="ghost"
               className="h-20 w-full rounded-xl border border-dotted text-muted-foreground"
@@ -454,7 +519,7 @@ export function AddTaskDrawer() {
               disabled={loading}
             >
               + Add more tasks
-            </Button>
+            </Button>}
           </div>
         </div>
 
@@ -464,8 +529,11 @@ export function AddTaskDrawer() {
             disabled={loading}
             className="h-[34px]"
           >
-            {loading
+            {loading && !isEdit
               ? "Adding tasks..."
+              : loading && isEdit
+              ? "Editing task..."
+              : isEdit ? "Edit Task" 
               : `Add ${tasks.length} ${tasks.length === 1 ? "Task" : "Tasks"}`}
           </Button>
         </DrawerFooter>

@@ -11,6 +11,12 @@ export default {
   theme: {
     extend: {
       colors: {
+
+
+        // Mine
+        "destructive-text": "hsl(var(--destructive-text))",
+        
+        // Automatic
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
