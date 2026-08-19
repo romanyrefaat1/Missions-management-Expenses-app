@@ -41,6 +41,7 @@ import { createClient } from "@/lib/supabase/client";
 import { DeleteTaskDialog } from "./DeleteTaskDialog";
 import { MyAlert } from "@/components/my-alert";
 import EditTaskButton from "./EditTaskButton";
+import { SetPaidPriceForTaskDialog } from "./SetPaidPriceForTask";
 
 export default function TaskItemInMissionPage({
   taskData,
@@ -220,7 +221,7 @@ export default function TaskItemInMissionPage({
         </CardContent>
         <div className="mb-2 p-2">
           {taskData.is_completed && (taskData.paid_price === 0 || taskData.paid_price === null || taskData.paid_price === undefined) ? 
-          <MyAlert variant="warning" title="You must set how much you paid for this task" action={<Button size={"sm"} variant={"outline"}>Set paid price</Button>}/> : <></>}
+          <MyAlert variant="warning" title="You must set how much you paid for this task" action={<SetPaidPriceForTaskDialog taskId={taskData.id}/>}/> : <></>}
         </div>
       </Card>
 

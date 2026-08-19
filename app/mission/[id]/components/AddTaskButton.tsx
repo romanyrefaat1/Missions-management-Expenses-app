@@ -36,6 +36,7 @@ import { createClient } from "@/lib/supabase/client";
 import { CompletedToggle } from "@/components/completed-toggle";
 import { useSession } from "@/contexts/session-context";
 import { useMission } from "@/contexts/mission-context";
+import { MyAlert } from "@/components/my-alert";
 
 type AddTaskDrawerProps = {
   mission: Mission;
@@ -418,7 +419,7 @@ setLoading(false);
                               type="number"
                               min="0"
                               step="0.01"
-                              placeholder="Optional"
+                              placeholder={(!task.paidPrice || task.paidPrice === "0") && task.isCompleted ? "Type here..." : "Optional"}
                               value={task.paidPrice}
                               onChange={(e) =>
                                 updateTask(index, {
@@ -428,9 +429,9 @@ setLoading(false);
                               disabled={loading}
                             />
 
-                            <FieldDescription>
+                            {(!task.paidPrice || task.paidPrice === "0") && task.isCompleted ? <MyAlert variant="error" title="You must set a paid price"/> : <FieldDescription>
                               Leave empty if nothing has been paid yet.
-                            </FieldDescription>
+                            </FieldDescription>}
                           </FieldContent>
                         </Field>
                       </div>
