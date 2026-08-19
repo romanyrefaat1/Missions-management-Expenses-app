@@ -3,13 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
-  MoreHorizontal,
-  Pencil,
-  Trash2,
   Hash,
   Wallet,
   CircleDollarSign,
-  Trash,
+  Trash2,
 } from "lucide-react";
 
 import { Task } from "@/types/types";
@@ -25,15 +22,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Separator } from "@/components/ui/separator";
 import CompletedToggleButton from "@/components/completed-toggle-button";
 
 import { toast } from "sonner";
@@ -123,34 +111,53 @@ export default function TaskItemInMissionPage({
     };
   }, []);
 
+  const needsPaidPrice =
+    taskData.is_completed &&
+    (taskData.paid_price === 0 ||
+      taskData.paid_price === null ||
+      taskData.paid_price === undefined);
+
   return (
     <>
       <Card
         className={cn(
-          "group overflow-hidden p-0 transition-all",
-          completed && "bg-muted/30",
+          "group relative overflow-hidden p-0 transition-colors hover:bg-muted/20",
+          completed && "bg-muted/25",
         )}
       >
+        {/* Completion state accent bar */}
+        <div
+          className={cn(
+            "absolute inset-y-0 left-0 w-[3px] transition-colors",
+            completed ? "bg-primary" : "bg-transparent",
+          )}
+        />
+
         <CardContent className="p-0">
-          <div className="flex min-h-32 items-stretch flex-col lg:flex-row pt-5 lg:pt-0">
+          <div className="flex min-h-32 flex-col items-stretch lg:flex-row">
             {/* Completion */}
-            <div className="flex shrink-0 items-center px-4">
-              <CompletedToggleButton
-                onCompletedChange={handleToggleCompleteTask}
-                isCompleted={isCompleted}
-                disabled={isSaving}
-              />
+            <div className="flex shrink-0 items-center justify-center px-5 py-4 lg:py-0">
+              <div
+                className={cn(
+                  "flex items-center justify-center rounded-full transition-colors",
+                  completed && "bg-primary/10",
+                )}
+              >
+                <CompletedToggleButton
+                  onCompletedChange={handleToggleCompleteTask}
+                  isCompleted={isCompleted}
+                  disabled={isSaving}
+                />
+              </div>
             </div>
 
-            <div className="w-[1px] bg-border self-stretch" />
-
             {/* Main */}
-            <div className="min-w-0 flex-1 p-5">
+            <div className="min-w-0 flex-1 border-t px-5 py-4 lg:border-t-0 lg:border-l lg:py-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <CardTitle
                     className={cn(
-                      "text-base",
+                      "text-base font-semibold tracking-tight",
                       completed && "text-muted-foreground line-through",
                     )}
                   >
@@ -158,71 +165,79 @@ export default function TaskItemInMissionPage({
                   </CardTitle>
 
                   {taskData.description && (
-                    <CardDescription className="mt-1.5 max-w-2xl line-clamp-2">
+                    <CardDescription className="mt-1 line-clamp-1 max-w-2xl text-sm">
                       {taskData.description}
                     </CardDescription>
                   )}
                 </div>
 
-                <div className="flex gap-2 border bg-accent p-1 rounded-xl">
+                <div className="flex shrink-0 items-center gap-0.5 opacity-100 transition-opacity lg:opacity-0 lg:group-hover:opacity-100">
                   <EditTaskButton task={taskData} />
-                  <Button className="hover:text-destructive-text hover:bg-destructive/30" variant="ghost" size={"icon-sm"} onClick={() => setIsDeleteAlertOpen(true)}><Trash2 /></Button>
+                  <Button
+                    className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive-text"
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={() => setIsDeleteAlertOpen(true)}
+                  >
+                    <Trash2 />
+                  </Button>
                 </div>
               </div>
-                  <DeleteTaskDialog onOpenChange={()=> {setIsDeleteAlertOpen((prev)=> !prev)}} open={isDeleteAlertOpen} taskId={taskData.id} />
 
-              <div className="mt-5 flex flex-wrap items-center gap-2">
-                <Badge variant={status.variant}>{status.label}</Badge>
+              <DeleteTaskDialog
+                onOpenChange={() => {
+                  setIsDeleteAlertOpen((prev) => !prev);
+                }}
+                open={isDeleteAlertOpen}
+                taskId={taskData.id}
+              />
 
-                <Separator orientation="vertical" className="h-4" />
+              <div className="mt-4 flex flex-wrap items-center gap-1.5">
+                <Badge variant={status.variant} className="rounded-md">
+                  {status.label}
+                </Badge>
 
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Hash className="size-3.5" />
-
-                  <span>{taskData.count}</span>
+                <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">
+                  <Hash className="size-3" />
+                  <span className="font-medium text-foreground">
+                    {taskData.count}
+                  </span>
                 </div>
 
                 {taskData.expected_price !== null && (
-                  <>
-                    <Separator orientation="vertical" className="h-4" />
-
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <CircleDollarSign className="size-3.5" />
-
-                      <span>
-                        Expected{" "}
-                        <span className="font-medium text-foreground">
-                          ${taskData.expected_price}
-                        </span>
-                      </span>
-                    </div>
-                  </>
+                  <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">
+                    <CircleDollarSign className="size-3" />
+                    <span>Expected</span>
+                    <span className="font-medium text-foreground">
+                      ${taskData.expected_price}
+                    </span>
+                  </div>
                 )}
 
                 {taskData.paid_price !== null && (
-                  <>
-                    <Separator orientation="vertical" className="h-4" />
-
-                    <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <Wallet className="size-3.5" />
-
-                      <span>
-                        Paid{" "}
-                        <span className="font-medium text-foreground">
-                          {taskData.paid_price}
-                        </span>
-                      </span>
-                    </div>
-                  </>
+                  <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">
+                    <Wallet className="size-3" />
+                    <span>Paid</span>
+                    <span className="font-medium text-foreground">
+                      ${taskData.paid_price}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </CardContent>
-        <div className="mb-2 p-2">
-          {taskData.is_completed && (taskData.paid_price === 0 || taskData.paid_price === null || taskData.paid_price === undefined) ? 
-          <MyAlert variant="warning" title="You must set how much you paid for this task" action={<SetPaidPriceForTaskDialog taskId={taskData.id}/>}/> : <></>}
-        </div>
+
+        {needsPaidPrice && (
+          <div className="border-t">
+            <MyAlert
+              variant="warning"
+              title="You must set how much you paid for this task"
+              action={<SetPaidPriceForTaskDialog taskId={taskData.id} />}
+              className="rounded-none border-0"
+            />
+          </div>
+        )}
       </Card>
 
       <DeleteTaskDialog
