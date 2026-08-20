@@ -15,6 +15,13 @@ export default {
 
         // Mine
         "destructive-text": "hsl(var(--destructive-text))",
+
+        primary: {
+    DEFAULT: "hsl(var(--primary))",
+    foreground: "hsl(var(--primary-foreground))",
+    dark: "hsl(var(--primary-dark))",
+    darker: "hsl(var(--primary-darker))",
+  },
         
         // Automatic
         background: "hsl(var(--background))",
@@ -27,10 +34,7 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
+        
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

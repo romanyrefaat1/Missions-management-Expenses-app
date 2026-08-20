@@ -16,15 +16,19 @@ function TaskSection({ title, tasks }: TaskSectionProps) {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <section className="flex flex-col gap-3">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-border/40 pb-2">
-        <div className="flex items-center gap-2.5">
-          <h3 className="text-base font-bold tracking-tight text-foreground">
-            {title}
-          </h3>
+    <section className="flex flex-col gap-4">
+      {/* Section header */}
+      <div className="flex items-center justify-between">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
 
-          <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-muted px-2 text-xs font-semibold text-muted-foreground">
+            <h3 className="font-body text-sm font-semibold tracking-[-0.01em] text-foreground">
+              {title}
+            </h3>
+          </div>
+
+          <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full border border-border/60 bg-muted/50 px-2 text-[11px] font-semibold tabular-nums text-muted-foreground">
             {tasks.length}
           </span>
         </div>
@@ -32,30 +36,31 @@ function TaskSection({ title, tasks }: TaskSectionProps) {
         <button
           type="button"
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          aria-expanded={isOpen}
+          className="group flex shrink-0 items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
         >
+          <span>{isOpen ? "Collapse" : "Expand"}</span>
+
           {isOpen ? (
-            <>
-              Collapse
-              <ChevronUp className="h-3.5 w-3.5" />
-            </>
+            <ChevronUp className="h-3.5 w-3.5 transition-transform" />
           ) : (
-            <>
-              Expand
-              <ChevronDown className="h-3.5 w-3.5" />
-            </>
+            <ChevronDown className="h-3.5 w-3.5 transition-transform" />
           )}
         </button>
       </div>
+
+      {/* Divider */}
+      <div className="h-px bg-border/50" />
 
       {/* Tasks */}
       {isOpen &&
         (tasks.length > 0 ? (
           <div className="flex flex-col gap-2.5">
             {tasks.map((task) => (
-              <div key={task.id}>
-                <TaskItemInMissionPage taskData={task} />
-              </div>
+              <TaskItemInMissionPage
+                key={task.id}
+                taskData={task}
+              />
             ))}
           </div>
         ) : (
@@ -70,15 +75,12 @@ export default function TasksListInMissionPage() {
 
   /*
    * SEARCH
-   *
-   * Search is now its own result type, so we can safely
-   * access filteredTasks.tasks.
    */
   if (searchKeyword.trim()) {
     return (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         <TaskSection
-          title={`Search Results for "${searchKeyword.trim()}"`}
+          title={`Search results for "${searchKeyword.trim()}"`}
           tasks={filteredTasks.tasks}
         />
       </div>
@@ -90,8 +92,11 @@ export default function TasksListInMissionPage() {
    */
   if (filteredTasks.type === "DATE") {
     return (
-      <div className="flex flex-col gap-8">
-        <TaskSection title="Newest" tasks={filteredTasks.tasks} />
+      <div className="flex flex-col gap-10">
+        <TaskSection
+          title="Newest"
+          tasks={filteredTasks.tasks}
+        />
       </div>
     );
   }
@@ -101,7 +106,7 @@ export default function TasksListInMissionPage() {
    */
   if (filteredTasks.type === "IS_COMPLETED") {
     return (
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-10">
         <TaskSection
           title="Completed"
           tasks={filteredTasks.completed}
@@ -119,7 +124,7 @@ export default function TasksListInMissionPage() {
    * STATE
    */
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       <TaskSection
         title="In Progress"
         tasks={filteredTasks.in_progress}

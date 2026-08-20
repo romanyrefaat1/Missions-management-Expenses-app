@@ -18,6 +18,9 @@
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
+    --primary-dark: 217 91% 45%;
+  --primary-darker: 217 91% 35%;
+
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
 
@@ -59,6 +62,10 @@
     --primary: 213 94% 72%;
     --primary-foreground: 222 47% 11%;
 
+     --primary-dark: 213 94% 57%;
+  --primary-darker: 213 94% 47%;
+
+
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
 
@@ -96,38 +103,34 @@
     line-height: 1.6;
   }
 
-  /* Headings */
+  /* Headings — sizing/weight scale kept, but font-family removed so
+     everything defaults to Geist (the body font). Apply .font-heading
+     manually wherever you want Fraunces. */
   h1 {
-    @apply text-4xl font-bold tracking-tight;
-    font-family: var(--font-fraunces);
+    @apply text-5xl font-bold tracking-tight leading-tight;
   }
 
   h2 {
-    @apply text-3xl font-semibold tracking-tight;
-    font-family: var(--font-fraunces);
+    @apply text-3xl font-semibold tracking-tight leading-snug;
   }
 
   h3 {
-    @apply text-2xl font-semibold tracking-tight;
-    font-family: var(--font-fraunces);
+    @apply text-xl font-semibold tracking-tight leading-snug;
   }
 
   h4 {
-    @apply text-xl font-semibold;
-    font-family: var(--font-fraunces);
+    @apply text-lg font-medium leading-snug;
   }
 
   h5 {
-    @apply text-lg font-semibold;
-    font-family: var(--font-fraunces);
+    @apply text-base font-medium leading-normal;
   }
 
   h6 {
-    @apply text-base font-semibold;
-    font-family: var(--font-fraunces);
+    @apply text-sm font-medium uppercase tracking-wide text-muted-foreground leading-normal;
   }
 
-  /* Font override utilities */
+  /* Font override utilities — apply manually wherever needed */
   .font-heading {
     font-family: var(--font-fraunces);
   }

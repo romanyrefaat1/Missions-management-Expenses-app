@@ -86,7 +86,7 @@ export default async function HomePage() {
   return (
     <div>
       <div>
-        <h2 className="mb-4">Missions</h2>
+        <h1 className="mb-4">All Missions</h1>
 
         <div className="grid grid-cols-1 gap-4">
           {missions?.map((mission) => (

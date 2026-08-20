@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Geist } from "next/font/google";
+import { Lora, Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { SessionProvider } from "@/contexts/session-context";
@@ -25,7 +25,7 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const fraunces = Fraunces({
+const lora = Lora({
   variable: "--font-fraunces",
   display: "swap",
   subsets: ["latin"],
@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} ${fraunces.variable} antialiased bg-background max-w-screen overflow-x-clip`}>
+      <body className={`${geistSans.className} ${lora.variable} antialiased bg-background max-w-screen overflow-x-clip`}>
         <div className="px-6 pb-8 sm:px-10 lg:px-16 w-full min-w-0">
           <SessionProvider>
             <MissionsAllProvider>
@@ -59,6 +59,7 @@ export default function RootLayout({
           </SessionProvider>
         </div>
       </body>
-    </html>
+
+      </html>
   );
 }
