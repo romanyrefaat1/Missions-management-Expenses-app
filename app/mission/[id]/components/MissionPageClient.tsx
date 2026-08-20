@@ -10,12 +10,15 @@ import { useMission } from "@/contexts/mission-context";
 import { useRouter } from "next/navigation";
 import { MissionsDropdown } from "./MissionsDropdown";
 import { MissionActionsDropDown } from "./MissionActionsDropDown";
+import { MissionoLoader } from "@/components/MissionoLoader";
 
 export default function MissionPageClient() {
   const { mission, loading, error, tasks } = useMission();
   const router = useRouter();
 
-  if (loading) return null;
+  if (loading) {
+  return <MissionoLoader />;
+}
   if (error) throw new Error (`Something went wrong: ${error}`);
 
   const topData = [
