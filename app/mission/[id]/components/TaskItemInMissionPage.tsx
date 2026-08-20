@@ -7,6 +7,7 @@ import {
   Wallet,
   CircleDollarSign,
   Trash2,
+  X,
 } from "lucide-react";
 
 import { Task } from "@/types/types";
@@ -30,6 +31,7 @@ import { DeleteTaskDialog } from "./DeleteTaskDialog";
 import { MyAlert } from "@/components/my-alert";
 import EditTaskButton from "./EditTaskButton";
 import { SetPaidPriceForTaskDialog } from "./SetPaidPriceForTask";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function TaskItemInMissionPage({
   taskData,
@@ -134,12 +136,12 @@ export default function TaskItemInMissionPage({
         />
 
         <CardContent className="p-0">
-          <div className="flex min-h-32 flex-col items-stretch lg:flex-row">
+          <div className="flex min-h-32 lg:items-stretch lg:flex-row">
             {/* Completion */}
-            <div className="flex shrink-0 items-center justify-center px-5 py-4 lg:py-0">
+            <div className="flex shrink-0 lg:items-center lg:justify-center px-3 lg:px-5 py-4 lg:py-0">
               <div
                 className={cn(
-                  "flex items-center justify-center rounded-full transition-colors",
+                  "lg:flex lg:items-center lg:justify-center rounded-full transition-colors h-fit",
                   completed && "bg-primary/10",
                 )}
               >
@@ -152,12 +154,12 @@ export default function TaskItemInMissionPage({
             </div>
 
             {/* Main */}
-            <div className="min-w-0 flex-1 border-t px-5 py-4 lg:border-t-0 lg:border-l lg:py-5">
+            <div className="min-w-0 flex-1 lg:px-5 py-4 lg:border-t-0 lg:border-l lg:py-5">
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <CardTitle
                     className={cn(
-                      "text-base font-semibold tracking-tight",
+                      "text-lg font- tracking-tight",
                       completed && "text-muted-foreground line-through",
                     )}
                   >
@@ -197,12 +199,23 @@ export default function TaskItemInMissionPage({
                   {status.label}
                 </Badge>
 
-                <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">
-                  <Hash className="size-3" />
+{(taskData.count)&& 
+                <div>
+                  
+
+
+                  <Tooltip>
+      <TooltipTrigger >
+        <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground"><X className="size-3" />
                   <span className="font-medium text-foreground">
                     {taskData.count}
-                  </span>
-                </div>
+                  </span></div>
+                  </TooltipTrigger>
+      <TooltipContent>
+        <p>Quantity / How many times</p>
+      </TooltipContent>
+    </Tooltip>
+                </div>}
 
                 {taskData.expected_price !== null && (
                   <div className="flex items-center gap-1 rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">

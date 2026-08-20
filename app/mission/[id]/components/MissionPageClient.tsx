@@ -88,13 +88,14 @@ export default function MissionPageClient() {
           </div>
 
           {/* Mission title row */}
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex min-w-0 md:flex-wrap md:items-center gap-3 flex-col md:flex-row">
               <h1 className="font-heading text-4xl font-medium leading-[1.05] tracking-[-0.035em] sm:text-5xl md:text-6xl">
                 {mission.name}
               </h1>
 
-              <MissionsDropdown
+              <div className="flex gap-2 items-center">
+                <MissionsDropdown
                 currentMission={mission.name}
                 onChange={(missionId) =>
                   router.push(`/mission/${missionId}`)
@@ -102,6 +103,7 @@ export default function MissionPageClient() {
               />
 
               <MissionActionsDropDown missionId={mission.id} />
+              </div>
             </div>
           </div>
 
@@ -157,7 +159,7 @@ export default function MissionPageClient() {
           </p>
         </div>
 
-        <Card className="grid overflow-hidden rounded-2xl border-accent border-2 p-px sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="grid overflow-hidden rounded-2xl border-accent dark:border-accent/20 border-2 dark:border-1 p-px sm:grid-cols-2 lg:grid-cols-4">
           {topData.map((el, index) => (
             <div
               key={index}

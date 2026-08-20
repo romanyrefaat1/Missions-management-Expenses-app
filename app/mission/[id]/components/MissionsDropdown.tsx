@@ -39,7 +39,7 @@ export function MissionsDropdown({
       value={isCurrentMission ? currentMissionData?.id : undefined}
       onValueChange={onChange}
     >
-      <SelectTrigger className="border-0 bg-transparent p-2 shadow-none">
+      <SelectTrigger className=" bg-transparent p-2 shadow-none">
         <SelectValue>
           {trigger_value}
         </SelectValue>
