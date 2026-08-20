@@ -72,14 +72,13 @@ export default function AppNavbar() {
     return null;
   }
 
-  // Logo needs to contrast with the background it sits on.
-  // Light background -> dark text logo. Dark background -> light text logo.
   const logoSrc =
     !mounted || theme === "light"
       ? "/logo-dark-text-no-bg.png"
       : "/logo-light-text-no-bg.png";
 
-  // Split into nav links vs. buttons so we can drop a separator between them
+      const LOGO_ASPECT = 460 / 97; // width / height of the cropped PNG
+
   const navLinks = links.filter((link) => !link.button);
   const navButtons = links.filter((link) => link.button);
 
@@ -88,13 +87,13 @@ export default function AppNavbar() {
       <div className="flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/home" className="flex items-center">
-          <Image
-            src={logoSrc}
-            alt="Missiono"
-            width={120}
-            height={32}
-            priority
-          />
+<Image
+  src={logoSrc}
+  alt="Missiono"
+  width={20 * LOGO_ASPECT}
+  height={40}
+  priority
+/>
         </Link>
 
         {/* Desktop navigation */}
