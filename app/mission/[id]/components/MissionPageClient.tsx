@@ -19,6 +19,8 @@ export default function MissionPageClient() {
   if (loading) {
   return <MissionoLoader />;
 }
+
+
   if (error) throw new Error (`Something went wrong: ${error}`);
 
   const topData = [
