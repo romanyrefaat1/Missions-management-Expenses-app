@@ -89,7 +89,7 @@ export function LoginForm({
   // Light background -> dark text logo. Dark background -> light text logo.
   const logoSrc =
     !mounted || theme === "light"
-      ? "/logo-dark-text.jpg"
+      ? "/logo-dark-text-no-bg.png"
       : "/logo-light-text-no-bg.png";
 
   const form = (
@@ -204,12 +204,12 @@ export function LoginForm({
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/20" />
 
           {/* Brand */}
-          <div className="absolute left-8 top-8 z-10">
+          <div className="absolute left-4 top-8 z-10">
             <Link href="/">
               <Image
                 src={logoSrc}
                 alt="Missionooo"
-                width={140}
+                width={100}
                 height={40}
                 priority
               />
@@ -324,11 +324,11 @@ export function LoginForm({
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/5 to-transparent" />
 
           {/* Logo */}
-          <div className="absolute top-6 z-10">
+          <div className="absolute left-5 top-6 z-10">
             <Image
               src={logoSrc}
-              alt="Missionooo"
-              width={140}
+              alt="Missiono"
+              width={80}
               height={40}
               priority
             />

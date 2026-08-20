@@ -99,7 +99,7 @@ export function SignUpForm({
   // Light background -> dark text logo. Dark background -> light text logo.
   const logoSrc =
     !mounted || theme === "light"
-      ? "/logo-dark-text.jpg"
+      ? "/logo-dark-text-no-bg.png"
       : "/logo-light-text-no-bg.png";
 
   const form = (
