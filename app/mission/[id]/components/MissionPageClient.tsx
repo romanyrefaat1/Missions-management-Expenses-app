@@ -164,7 +164,7 @@ export default function MissionPageClient() {
               className="group flex min-h-[180px] flex-col justify-between bg-secondary/50 p-6 transition-colors hover:bg-muted/30"
             >
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.14em] leading-snug text-muted-foreground">
                   {el.title}
                 </p>
 

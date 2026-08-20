@@ -275,7 +275,7 @@ setLoading(false);
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>{
-            !isEdit ? `Add tasks to ${mission.name}` : `Edit a task on mission: ${mission.name}` 
+            !isEdit ? <><span className={"font-heading italic"}>Add tasks to</span> {mission.name}</> : `Edit a task on mission: ${mission.name}` 
 }</DrawerTitle>
 
           <DrawerDescription>

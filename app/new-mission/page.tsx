@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -22,19 +22,28 @@ import { Mission } from "@/types/types";
 import { useMissionsAll } from "@/contexts/missions-all-context";
 import Link from "next/link";
 
-export default function NewMissionPage({}) {
+export default function NewMissionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <NewMissionForm />
+    </Suspense>
+  );
+}
 
+function NewMissionForm() {
   const searchParams = useSearchParams();
 
-  const missionId = searchParams.get("missionId")
-  const isEdit = searchParams.get("edit")
-  const {getMissionById, loading: missionLoading} = useMissionsAll()
-  
+  const missionId = searchParams.get("missionId");
+  const isEdit = searchParams.get("edit");
+  const { getMissionById, loading: missionLoading } = useMissionsAll();
+
   const { session, loading: sessionLoading } = useSession();
 
   const router = useRouter();
 
-  const [missionData, setMissionData] = useState<Mission | null | undefined>(null)
+  const [missionData, setMissionData] = useState<Mission | null | undefined>(
+    null,
+  );
 
   const [formData, setFormData] = useState({
     name: "",
@@ -45,29 +54,27 @@ export default function NewMissionPage({}) {
     real_budget: null,
   });
 
-  useEffect(()=> {
-
-    const handleEditData = ()=> {
+  useEffect(() => {
+    const handleEditData = () => {
       if (missionId && isEdit) {
-      const mission = getMissionById(missionId)
+        const mission = getMissionById(missionId);
 
-      console.log("Mission", mission)
+        console.log("Mission", mission);
 
-      setMissionData(mission)
-      setFormData({
-        name: mission?.name,
-        description: mission?.description,
-        is_completed: mission?.is_completed,
-        state: mission?.state,
-        expected_budget: mission?.expected_budget,
-        real_budget: mission?.real_budget
-      })
-    }
-    }
+        setMissionData(mission);
+        setFormData({
+          name: mission?.name ?? "",
+          description: mission?.description ?? "",
+          is_completed: mission?.is_completed ?? false,
+          state: mission?.state ?? "IN_PROGRESS",
+          expected_budget: mission?.expected_budget ?? null,
+          real_budget: mission?.real_budget ?? null,
+        });
+      }
+    };
 
-    handleEditData()
-
-  }, [isEdit, missionId, missionLoading])
+    handleEditData();
+  }, [isEdit, missionId, missionLoading]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -90,33 +97,30 @@ export default function NewMissionPage({}) {
 
     const supabsase = createClient();
 
-
     if (!isEdit) {
+      const { error, data }: { error: any; data: Mission | null } =
+        await supabsase
+          .from("missions")
+          .insert({ ...formData, user_id: session?.user.id })
+          .select()
+          .single();
 
-    const { error, data }: { error: any; data: Mission | null } =
-      await supabsase
-        .from("missions")
-        .insert({ ...formData, user_id: session?.user.id })
-        .select()
-        .single();
+      if (error) {
+        toast.error(`Error creating mission: ${error.message}`);
+        console.error("Error creating mission:", error.message);
+        return;
+      }
 
-    if (error) {
-      toast.error(`Error creating mission: ${error.message}`);
-      console.error("Error creating mission:", error.message);
+      console.log(formData);
+      toast.success("Mission Created successfully! Routing to add tasks");
+      router.push(`/mission/${data.id}`);
       return;
     }
 
-    console.log(formData);
-    toast.success("Mission Created successfully! Routing to add tasks");
-    router.push(`/mission/${data.id}`);
-    return;
-    }
-
-    const { error }: { error: any; data: Mission | null } =
-      await supabsase
-        .from("missions")
-        .update({ ...formData, user_id: session?.user.id })
-        .eq("id", missionId)
+    const { error }: { error: any; data: Mission | null } = await supabsase
+      .from("missions")
+      .update({ ...formData, user_id: session?.user.id })
+      .eq("id", missionId);
 
     if (error) {
       toast.error(`Error editing mission: ${error.message}`);
@@ -134,7 +138,16 @@ export default function NewMissionPage({}) {
       <div className="mx-auto w-full">
         <div className="mb-10">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {!isEdit ?  "Create a new mission" : <>Edit your <Link className="italic" href={`/mission/${missionId}`}>Mission</Link></>}
+            {!isEdit ? (
+              "Create a new mission"
+            ) : (
+              <>
+                Edit your{" "}
+                <Link className="italic" href={`/mission/${missionId}`}>
+                  Mission
+                </Link>
+              </>
+            )}
           </h1>
 
           <p className="mt-2 text-muted-foreground">
@@ -211,7 +224,7 @@ export default function NewMissionPage({}) {
                 type="number"
                 min="0"
                 step="0.01"
-                value={formData.expected_budget}
+                value={formData.expected_budget ?? ""}
                 onChange={handleChange}
                 placeholder="0.00"
                 className="h-12"
@@ -229,7 +242,7 @@ export default function NewMissionPage({}) {
                 type="number"
                 min="0"
                 step="0.01"
-                value={formData.real_budget}
+                value={formData.real_budget ?? ""}
                 onChange={handleChange}
                 placeholder="0.00"
                 className="h-12"
@@ -262,7 +275,7 @@ export default function NewMissionPage({}) {
           {/* Submit */}
           <div className="flex justify-end border-t pt-6">
             <Button type="submit" size="lg">
-              {!isEdit ? "Create": "Edit"} mission
+              {!isEdit ? "Create" : "Edit"} mission
             </Button>
           </div>
         </form>
