@@ -43,7 +43,7 @@ function NewMissionForm() {
   const missionId = searchParams.get("missionId");
   const isEdit = searchParams.get("edit");
 
-  const { getMissionById, loading: missionLoading } = useMissionsAll();
+  const { getMissionById, loading: missionLoading , allMissions} = useMissionsAll();
   const { session } = useSession();
   const router = useRouter();
 
@@ -147,7 +147,11 @@ function NewMissionForm() {
         {/* Header */}
         <div className="mb-10">
           <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-            {!isEdit ? (
+            {
+            
+            !isEdit && allMissions.length === 0 ? (
+              "Create your first mission!"
+            ): !isEdit ? (
               "Create a new mission"
             ) : (
               <>

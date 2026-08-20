@@ -71,7 +71,7 @@ export function LoginForm({
 
       if (error) throw error;
 
-      router.push("/home");
+      router.push("/home?from=login");
     } catch (error: unknown) {
       setError(
         error instanceof Error ? error.message : "An error occurred",

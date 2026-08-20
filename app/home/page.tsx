@@ -6,8 +6,17 @@ import Link from "next/link";
 
 import { formatSupabaseTimestamp } from "@/lib/formatSupabaseTimestamp";
 import { Mission } from "@/types/types";
+import { redirect } from "next/navigation";
+import { red } from "next/dist/lib/picocolors";
+import EmptyMissions from "../mission/[id]/components/EmptyMissions";
 
-export default async function HomePage() {
+export default async function HomePage({searchParams}) {
+  const {from}: {from: "sign-up" | "login" | undefined} = await searchParams;
+
+  if (from === "sign-up") {
+    redirect("/new-mission");
+  }
+  
   const supabase = await createClient();
 
   const {
@@ -43,6 +52,15 @@ export default async function HomePage() {
       </div>
     );
   }
+
+  if (from === "login" && missions.length === 0) {
+    redirect("/new-mission")
+  }
+
+  if (missions.length === 0) {
+    return <div><h1 className="mb-8 font-heading">All Missions</h1>
+    <EmptyMissions /></div>
+  }  
 
   const missionGrid = (mission: Mission) => [
     {

@@ -27,7 +27,7 @@ export default function EmptyTasksSection({
         </EmptyMedia>
 
         <EmptyTitle className="font-body text-base font-semibold tracking-[-0.015em]">
-          No <span className="font-heading text-primary">{state.toLowerCase()}</span> tasks
+          No <span className="font-heading text-primary">{state !== "Newest" ? state.toLowerCase() : ""}</span> tasks yet
         </EmptyTitle>
 
         <EmptyDescription className="text-sm leading-6 text-muted-foreground/80">
