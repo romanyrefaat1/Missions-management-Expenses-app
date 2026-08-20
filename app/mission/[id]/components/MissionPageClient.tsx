@@ -221,7 +221,7 @@ export default function MissionPageClient() {
                   className="overflow-hidden"
                 >
                   <MyAlert
-                    variant="warning"
+                    variant="default"
                     title={el.warning.label || "Something needs attention"}
                     description={el.warning.description}
                     action={el.warning.action_component}
