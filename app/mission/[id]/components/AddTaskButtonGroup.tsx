@@ -9,7 +9,7 @@ import { FilterDropDown } from "./FilterDropDown";
 export function AddTaskGroup() {
   return (
     <ButtonGroup>
-      <Button variant="outline">Select Tasks</Button>
+      {/* <Button variant="outline">Select Tasks</Button> */}
       <FilterDropDown />
       <AddTaskDrawer />
     </ButtonGroup>
