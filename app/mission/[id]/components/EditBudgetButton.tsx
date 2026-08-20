@@ -13,14 +13,17 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
+import React from "react";
 import { toast } from "sonner";
 
 export default function EditBudgetButton({
   missionId,
   missionName,
+  children
 }: {
   missionId: string;
   missionName: string;
+  children: string | React.ReactElement;
 }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,7 +70,7 @@ export default function EditBudgetButton({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="default" size="sm">
-          Edit
+          {children}
         </Button>
       </DialogTrigger>
 
@@ -75,7 +78,7 @@ export default function EditBudgetButton({
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>
-              Change your current budget for {missionName}
+              Change your current budget for: <span className="italic leading-tight">{missionName}</span>
             </DialogTitle>
 
             <DialogDescription>

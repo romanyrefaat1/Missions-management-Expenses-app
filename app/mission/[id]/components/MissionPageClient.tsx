@@ -16,8 +16,7 @@ export default function MissionPageClient() {
   const router = useRouter();
 
   if (loading) return null;
-  if (error) return <MyAlert>Error: {error}</MyAlert>;
-  if (!mission) return <MyAlert>Mission not found.</MyAlert>;
+  if (error) throw new Error (`Something went wrong: ${error}`);
 
   const topData = [
     {
@@ -35,7 +34,7 @@ export default function MissionPageClient() {
         ? {
             label: "Please set your current budget",
             action_component: (
-              <Button size="xs">Add Current Budget</Button>
+              <Button size="sm">Add Current Budget</Button>
             ),
           }
         : undefined,
@@ -56,11 +55,16 @@ export default function MissionPageClient() {
           ? mission.real_budget - mission.current_paid
           : null,
       warning:
-        !mission.real_budget || !mission.current_paid
+         tasks.filter((el)=> el.is_completed == true).length !==0 && (!mission.real_budget || !mission.current_paid )
           ? {
               label: "Your budget and task prices must be set",
-              description: "Please click the button to fix this.",
-              action_component: <Button size="sm">Fix</Button>,
+              // description: "Please click the button to fix this.",
+              action_component: <EditBudgetButton
+          missionId={mission.id}
+          missionName={mission.name}
+        >
+          Set Budget
+        </EditBudgetButton>,
             }
           : undefined,
     },
@@ -209,7 +213,7 @@ export default function MissionPageClient() {
               el.warning && (
                 <div
                   key={index}
-                  className="overflow-hidden rounded-xl"
+                  className="overflow-hidden"
                 >
                   <MyAlert
                     variant="warning"
