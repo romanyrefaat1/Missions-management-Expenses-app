@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/client";
 interface SessionContextType {
   session: Session | null;
   loading: boolean;
+  error: string | null;
 }
 
 interface SessionProviderProps {
@@ -26,6 +27,7 @@ const SessionContext = createContext<SessionContextType | undefined>(undefined);
 export function SessionProvider({ children }: SessionProviderProps) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -35,6 +37,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
 
       if (error) {
         console.error("Error getting session:", error);
+        setError(`Error loading session ${error}`)
       }
 
       setSession(data.session);
@@ -60,6 +63,7 @@ export function SessionProvider({ children }: SessionProviderProps) {
       value={{
         session,
         loading,
+        error
       }}
     >
       {children}

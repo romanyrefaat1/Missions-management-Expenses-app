@@ -143,7 +143,7 @@ function NewMissionForm() {
             ) : (
               <>
                 Edit your{" "}
-                <Link className="italic" href={`/mission/${missionId}`}>
+                <Link className="italic font-heading underline hover:text-primary-dark" href={`/mission/${missionId}`}>
                   Mission
                 </Link>
               </>

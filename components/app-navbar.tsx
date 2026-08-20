@@ -1,12 +1,8 @@
 "use client";
 
 import {
-  House,
   PlusCircle,
-  Navigation,
-  MessageSquare,
   Menu,
-  ListChecks,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -19,12 +15,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { usePathname } from "next/navigation";
+import { AuthButtonClient } from "./auth-button-client";
+import { cn } from "@/lib/utils";
 
 const links = [
   {
     href: "/home",
-    // label: "Home",
-    icon: House,
+    label: "Home",
+    // icon: House,
   },
   // {
   //   href: "/missions",
@@ -34,6 +32,10 @@ const links = [
   {
     href: "/new-mission",
     label: "New Mission",
+    icon: PlusCircle,
+  },
+  {
+    button: <AuthButtonClient style="sheet"/>,
     icon: PlusCircle,
   },
   // {
@@ -51,7 +53,7 @@ const links = [
 export default function AppNavbar() {
     const pathname = usePathname();
 
-  if (pathname === "/") {
+  if (pathname === "/" || pathname === "/auth/login" || pathname === "/auth/sign-up") {
     return null;
   }
   return (
@@ -66,21 +68,27 @@ export default function AppNavbar() {
         </Link>
 
         {/* Desktop navigation */}
-        <div className="hidden items-center gap-1 md:flex">
-          {links.map(({ href, label, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <Icon
-                className="size-4 shrink-0 transition-transform duration-200 group-hover:scale-105"
-                strokeWidth={1.8}
-              />
-              {label}
-            </Link>
-          ))}
-        </div>
+       <div className="hidden items-center gap-1 md:flex">
+  {links.map(({ href, label, icon: Icon, button }, index) => (
+    <div key={index}>
+      {!button && (
+        <Link
+          href={href}
+          className="group flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+        >
+          {Icon && (
+            <Icon
+              className="size-4 shrink-0 transition-transform duration-200 group-hover:scale-105"
+              strokeWidth={1.8}
+            />
+          )}
+          {label}
+        </Link>
+      )}
+      {button && button}
+    </div>
+  ))}
+</div>
 
         {/* Mobile menu */}
         <Sheet>
@@ -98,20 +106,26 @@ export default function AppNavbar() {
               <SheetTitle>Missiono</SheetTitle>
             </SheetHeader>
 
-            <div className="mt-6 flex flex-col gap-1">
-              {links.map(({ href, label, icon: Icon }) => (
-                <SheetClose asChild key={href}>
-                  <Link
+            <div className={"mt-6 flex flex-col gap-1"}>
+              {links.map(({ href, label, icon: Icon, button }, index) => (
+                <div key={index} className={cn(button && "absolute bottom-0")}>
+                <SheetClose asChild>
+                  <span>
+                  {!button && <Link
                     href={href}
                     className="group flex items-center gap-3 rounded-lg px-3 py-3 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                   >
-                    <Icon
+                      {Icon && <Icon
                       className="size-4 shrink-0 transition-transform duration-200 group-hover:scale-105"
                       strokeWidth={1.8}
-                    />
+                    />}
                     {label}
-                  </Link>
+                  </Link>}
+
+                  {button && button}
+                    </span>
                 </SheetClose>
+                  </div>
               ))}
             </div>
           </SheetContent>

@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import AppNavbar from "@/components/app-navbar";
 import { MissionsAllProvider } from "@/contexts/missions-all-context";
 import { Suspense } from "react";
+import LayoutPadding from "./LayoutPadding";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -39,7 +40,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.className} ${lora.variable} antialiased bg-background max-w-screen overflow-x-clip`}>
-        <div className="px-6 pb-8 sm:px-10 lg:px-16 w-full min-w-0">
+        <LayoutPadding>
+        <div id="first-div-inside-body" className="w-full min-w-0">
           <SessionProvider>
             <MissionsAllProvider>
             <ThemeProvider
@@ -58,6 +60,7 @@ export default function RootLayout({
             </MissionsAllProvider>
           </SessionProvider>
         </div>
+        </LayoutPadding>
       </body>
 
       </html>
