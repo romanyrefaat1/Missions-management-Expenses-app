@@ -366,3 +366,7 @@
     opacity: 0;
     }
   }}
+
+  button, a {
+    cursor: pointer;
+  }
