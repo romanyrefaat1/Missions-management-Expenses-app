@@ -76,7 +76,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `https://missiono.vercel.app/home?from=sign-up`,
+          emailRedirectTo: `${window.location.origin}/auth/confirm`,
         },
       });
 
