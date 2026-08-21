@@ -5,8 +5,24 @@ import { Button } from "./ui/button";
 import { LogoutButton } from "./logout-button";
 import { useSession } from "@/contexts/session-context";
 import { cn } from "@/lib/utils";
+import React from "react";
 
-export function AuthButtonClient({ style }: { style: "sheet" | null }) {
+type ButtonVariantProp = {
+  variant?: React.ComponentProps<typeof Button>["variant"];
+  size?: React.ComponentProps<typeof Button>["size"];
+};
+
+export function AuthButtonClient({
+  style,
+  buttonVariant,
+}: {
+  style?: "sheet" | null;
+  buttonVariant?: {
+    logout?: ButtonVariantProp;
+    signUp?: ButtonVariantProp;
+    login?: ButtonVariantProp;
+  };
+}) {
   const { loading, session, error } = useSession();
 
   const user = session?.user;
@@ -39,7 +55,10 @@ export function AuthButtonClient({ style }: { style: "sheet" | null }) {
 
   return user ? (
     <div className={cn("flex items-center gap-4", style === "sheet" && "w-full")}>
-      <LogoutButton />
+      <LogoutButton
+        variant={buttonVariant?.logout?.variant}
+        size={buttonVariant?.logout?.size}
+      />
     </div>
   ) : (
     <div
@@ -50,16 +69,16 @@ export function AuthButtonClient({ style }: { style: "sheet" | null }) {
     >
       <Button
         asChild
-        size="sm"
-        variant="outline"
+        size={buttonVariant?.login?.size ?? "sm"}
+        variant={buttonVariant?.login?.variant ?? "outline"}
         className={cn(style === "sheet" && "w-full")}
       >
         <Link href="/auth/login">Sign in</Link>
       </Button>
       <Button
         asChild
-        size="sm"
-        variant="default"
+        size={buttonVariant?.signUp?.size ?? "sm"}
+        variant={buttonVariant?.signUp?.variant ?? "default"}
         className={cn(style === "sheet" && "w-full")}
       >
         <Link href="/auth/sign-up">Sign up</Link>

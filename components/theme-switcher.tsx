@@ -16,6 +16,8 @@ export type TransitionVariant =
   | "star"
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<"button"> {
+  isText?: boolean
+  
   duration?: number
   variant?: TransitionVariant
   /** When true, the transition expands from the viewport center instead of the button center. */
@@ -157,6 +159,7 @@ export const ThemeSwitcher = ({
   fromCenter = false,
   theme,
   onThemeChange,
+  isText=false,
   ...props
 }: AnimatedThemeTogglerProps) => {
   const shape = variant ?? "circle"
@@ -320,7 +323,7 @@ export const ThemeSwitcher = ({
       type="button"
       ref={buttonRef}
       onClick={toggleTheme}
-      className={cn(className)}
+      className={cn("flex gap-1 items-center justify-center align-center cursor-pointer",className)}
       {...props}
     >
       {isDark ? (
@@ -328,7 +331,7 @@ export const ThemeSwitcher = ({
       ) : (
         <Moon size={16} className="text-muted-foreground" />
       )}
-      <span className="sr-only">Toggle theme</span>
+      {isText && <span className="sr-">Toggle theme</span>}
     </button>
   )
 }

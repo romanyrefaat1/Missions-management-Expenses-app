@@ -29,25 +29,15 @@ import { MagicCard } from "@/components/ui/magic-card";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { CloudShader } from "@/components/ui/cloud-shader";
 import Image from "next/image";
-
-function Logo() {
-  return (
-    <Link
-      href="/"
-      className="group flex items-center gap-2 text-foreground no-underline hover:no-underline"
-    >
-      <div className="relative h-7 w-8 shrink-0">
-        <span className="absolute left-0 top-[12px] h-[2px] w-5 rotate-[-28deg] rounded-full bg-primary transition-transform duration-500 group-hover:-translate-y-1" />
-        <span className="absolute left-[5px] top-[12px] h-[2px] w-5 rotate-[28deg] rounded-full bg-primary transition-transform duration-500 group-hover:translate-y-1" />
-        <span className="absolute left-[10px] top-[12px] h-[2px] w-5 rotate-[-28deg] rounded-full bg-primary opacity-50 transition-transform duration-500 group-hover:translate-x-1" />
-      </div>
-
-      <span className="font-body text-lg font-bold tracking-[-0.04em]">
-        Missiono
-      </span>
-    </Link>
-  );
-}
+import { useIsMobile } from "@/hooks/use-mobile";
+import Logo from "@/components/logo";
+import { ThemeSwitcher } from "@/components/theme-switcher";
+import { AuthButtonClient } from "@/components/auth-button-client";
+import { useSession } from "@/contexts/session-context";
+import { TextReveal } from "@/components/ui/text-reveal";
+import { GridPattern } from "@/components/ui/grid-pattern";
+import { cn } from "@/lib/utils";
+import { NoiseTexture } from "@/components/ui/noise-texture";
 
 function ArrowMark({
   className = "",
@@ -473,6 +463,8 @@ function OnTheGo() {
 }
 
 export default function HomePage() {
+  const {session, loading: sessionLoading} = useSession()
+  
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -489,6 +481,8 @@ export default function HomePage() {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+  const isMobile= useIsMobile()
 
   // Track dark mode so the hero sky can switch between day/night palettes.
   useEffect(() => {
@@ -538,26 +532,30 @@ export default function HomePage() {
               >
                 On The Go
               </Link>
+
+              <span
+                className=" flex gap-1 justify-center align-center text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline transition"
+              >
+                <ThemeSwitcher isText={true}/>
+              </span>
             </div>
 
             <div className="hidden items-center gap-2 md:flex">
-              <Link
-                href="/login"
-                className="px-3 py-2 text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline"
-              >
-                Sign in
-              </Link>
+  {!sessionLoading && (session?.user ? (
+    <AuthButtonClient buttonVariant={{logout: {variant: "link"}}} />
+  ) : (
+    <Link href="/auth/login" className="px-3 py-2 text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline">
+      Sign in
+    </Link>
+  ))}
 
-              <Button asChild size="sm" className="rounded-lg">
-                <Link
-                  href="/signup"
-                  className="no-underline hover:no-underline"
-                >
-                  Start a mission
-                  <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-                </Link>
-              </Button>
-            </div>
+  <Button asChild size="sm" className="rounded-lg">
+    <Link href={session?.user ? "/home" : "/auth/sign-up"} className="no-underline hover:no-underline">
+      {session?.user ? "Go to app" : "Start a mission"}
+      <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
+    </Link>
+  </Button>
+</div>
 
             <button
               className="rounded-lg p-2 md:hidden"
@@ -602,11 +600,11 @@ export default function HomePage() {
 
               <div className="mt-2 grid grid-cols-2 gap-2 border-t pt-3">
                 <Button asChild variant="outline">
-                  <Link href="/login">Sign in</Link>
+                  <Link href="/auth/login">Sign in</Link>
                 </Button>
 
                 <Button asChild>
-                  <Link href="/signup">Start</Link>
+                  <Link href="/auth/sign-up">Start</Link>
                 </Button>
               </div>
             </div>
@@ -620,8 +618,8 @@ export default function HomePage() {
         <div className="pointer-events-none absolute inset-0">
           {isDark ? (
             <CloudShader
-              speed={0.45}
-              count={5}
+              speed={isMobile ? 0.1 : 0.45}
+              count={isMobile ? 2 : 5}
               cloudColor="#1b2233"
               skyTopColor="#05070d"
               skyBottomColor="#141c2e"
@@ -629,8 +627,8 @@ export default function HomePage() {
             />
           ) : (
             <CloudShader
-              speed={0.45}
-              count={5}
+              speed={isMobile ? 0.1 : 0.45}
+              count={isMobile ? 2 : 5}
               cloudColor="#fbf8f2"
               skyTopColor="#5d91c4"
               skyBottomColor="#c7e0f2"
@@ -707,7 +705,7 @@ export default function HomePage() {
                     className="h-12 rounded-xl px-6"
                   >
                     <Link
-                      href="/signup"
+                      href="/auth/sign-up"
                       className="flex items-center gap-2 text-sm font-semibold text-primary-foreground no-underline hover:no-underline"
                     >
                       Start a mission
@@ -718,7 +716,7 @@ export default function HomePage() {
                   <Button
                     asChild
                     variant="ghost"
-                    className="h-12 px-4"
+                    className="h-12 px-4 hover:bg-trasnparent"
                   >
                     <Link href="#story">
                       See how it works
@@ -866,8 +864,19 @@ export default function HomePage() {
       {/* BUDGET */}
       <section
         id="budget"
-        className="scroll-mt-24 border-y bg-[#f4f2ed] px-4 py-28 dark:bg-muted/20 sm:px-6 sm:py-36"
+        className="scroll-mt-24 border-y bg-[#f4f2ed] px-4 py-28 dark:bg-muted/20 sm:px-6 sm:py-36 bg-background relative flex size-full items-center justify-center overflow-hidden rounded-lg border p-20"
       >
+
+        <GridPattern
+        width={20}
+        height={20}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )}
+      />
+        
         <div className="mx-auto max-w-6xl">
           <div className="grid items-center gap-16 lg:grid-cols-[1fr_0.85fr]">
             <div>
@@ -969,13 +978,13 @@ export default function HomePage() {
                 ))}
               </div>
 
-              <Link
+              {/* <Link
                 href="/on-the-go"
                 className="mt-9 inline-flex items-center gap-2 text-sm font-semibold text-blue-300 no-underline hover:text-blue-200 hover:no-underline"
               >
                 Open On The Go
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </Link> */}
             </div>
 
             <BlurFade inView>
@@ -986,8 +995,26 @@ export default function HomePage() {
       </section>
 
       {/* FEATURES */}
-      <section className="px-4 py-28 sm:px-6 sm:py-40">
-        <div className="mx-auto max-w-6xl">
+      <section className="px-4 py-28 sm:px-6 sm:py-40 bg-background relative flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-neutral-100/80 dark:bg-neutral-950">
+      {/* <GridPattern
+        width={20}
+        height={20}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)]"
+        )}
+      /> */}
+          <NoiseTexture
+        className={cn(
+          "absolute inset-0",
+          "mask-[radial-gradient(420px_circle_at_center,white,transparent)]"
+        )}
+      />
+        
+        <div className="mx-auto max-w-6xl ">
+
+          
           <div className="max-w-2xl">
             <SectionEyebrow>
               Everything a mission needs
@@ -1212,7 +1239,7 @@ export default function HomePage() {
                 className="h-12 rounded-xl px-7"
               >
                 <Link
-                  href="/signup"
+                  href="/auth/sign-up"
                   className="flex items-center gap-2 text-sm font-semibold text-primary-foreground no-underline hover:no-underline"
                 >
                   Start a mission
@@ -1225,7 +1252,7 @@ export default function HomePage() {
                 variant="ghost"
                 className="h-12"
               >
-                <Link href="/login">
+                <Link href="/auth/login">
                   I already have an account
                 </Link>
               </Button>

@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { ThemeSwitcher } from "./theme-switcher";
+import Logo from "./logo";
 
 const links = [
   {
@@ -77,7 +78,7 @@ export default function AppNavbar() {
       ? "/logo-dark-text-no-bg.png"
       : "/logo-light-text-no-bg.png";
 
-      const LOGO_ASPECT = 460 / 97; // width / height of the cropped PNG
+      // const LOGO_ASPECT = 460 / 97; // width / height of the cropped PNG
 
   const navLinks = links.filter((link) => !link.button);
   const navButtons = links.filter((link) => link.button);
@@ -86,15 +87,7 @@ export default function AppNavbar() {
     <nav className="mb-6 w-full">
       <div className="flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/home" className="flex items-center">
-<Image
-  src={logoSrc}
-  alt="Missiono"
-  width={20 * LOGO_ASPECT}
-  height={40}
-  priority
-/>
-        </Link>
+        <Logo href="/home"/>
 
         {/* Desktop navigation */}
         <div className="hidden items-center gap-1 md:flex">
