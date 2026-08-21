@@ -28,6 +28,7 @@ import { NumberTicker } from "@/components/ui/number-ticker";
 import { MagicCard } from "@/components/ui/magic-card";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { CloudShader } from "@/components/ui/cloud-shader";
+import Image from "next/image";
 
 function Logo() {
   return (
@@ -737,8 +738,29 @@ export default function HomePage() {
             </div>
 
             <BlurFade delay={0.25} inView>
-              <MissionCard />
-            </BlurFade>
+  <div className="relative">
+    <div className="absolute -inset-6 rounded-[3rem] bg-primary/[0.045] blur-3xl" />
+
+    <div className="relative rotate-[1.2deg] overflow-hidden rounded-[1.5rem] border border-border shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)] transition-transform duration-700 hover:rotate-0">
+      <Image
+        alt="Mission page"
+        src={!isDark ? "/screenshot-mission-id.png" : "/screenshot-mission-id-darkmode.png"}
+        width={600}
+        height={760}
+        priority
+        className="h-auto w-full object-cover"
+      />
+    </div>
+
+    {/* keep these two if you still want the floating badges */}
+    <div className="absolute -bottom-5 -left-5 hidden rotate-[-4deg] rounded-xl border border-border bg-card px-4 py-3 shadow-lg sm:block">
+      {/* ... "8 tasks" chip ... */}
+    </div>
+    <div className="absolute -right-4 top-12 hidden rotate-[4deg] rounded-xl border border-border bg-card px-4 py-3 shadow-lg sm:block">
+      {/* ... "$180" chip ... */}
+    </div>
+  </div>
+</BlurFade>
           </div>
         </div>
       </section>
