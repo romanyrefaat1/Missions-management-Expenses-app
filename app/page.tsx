@@ -38,6 +38,7 @@ import { TextReveal } from "@/components/ui/text-reveal";
 import { GridPattern } from "@/components/ui/grid-pattern";
 import { cn } from "@/lib/utils";
 import { NoiseTexture } from "@/components/ui/noise-texture";
+import { LogoutButton } from "@/components/logout-button";
 
 function ArrowMark({
   className = "",
@@ -500,7 +501,6 @@ export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       {/* NAV */}
-     {/* NAV */}
 <header className="fixed inset-x-0 top-0 z-50">
   <div className="mx-auto max-w-6xl px-4 pt-3 sm:px-6">
     <nav
@@ -566,10 +566,6 @@ export default function HomePage() {
               </Link>
             )}
 
-            {/* IMPORTANT:
-                Link wraps the ShimmerButton instead of the other way around.
-                This makes the navigation work reliably.
-            */}
             <Link
               href={session?.user ? "/home" : "/auth/sign-up"}
               className="no-underline hover:no-underline"
@@ -638,11 +634,11 @@ export default function HomePage() {
           <div className="my-2 border-t border-border/60" />
 
           <div className="flex min-h-12 items-center justify-between rounded-xl px-3">
-            <span className="text-sm text-muted-foreground">
+            {/* <span className="text-sm text-muted-foreground">
               Theme
-            </span>
+            </span> */}
 
-            <div className="flex shrink-0 items-center">
+            <div className="flex shrink-0 items-center justify-center">
               <ThemeSwitcher isText={true} />
             </div>
           </div>
@@ -654,6 +650,13 @@ export default function HomePage() {
 
               {session?.user ? (
                 <div className="space-y-2 p-1">
+                  {/* Logout */}
+                  <div className="w-full [&>button]:h-11 [&>button]:w-full [&>button]:rounded-xl">
+                    <LogoutButton
+                    className="w-full"
+                    variant={"outline"}
+                    />
+                  </div>
                   {/* Go to app */}
                   <Link
                     href="/home"
@@ -669,18 +672,6 @@ export default function HomePage() {
                       <ArrowUpRight className="h-4 w-4" />
                     </ShimmerButton>
                   </Link>
-
-                  {/* Logout */}
-                  <div className="w-full [&>button]:h-11 [&>button]:w-full [&>button]:rounded-xl">
-                    <AuthButtonClient
-                      buttonVariant={{
-                        logout: {
-                          variant: "outline",
-                        },
-                      }}
-                      isLogoutRoute={false}
-                    />
-                  </div>
                 </div>
               ) : (
                 <div className="space-y-2 p-1">
