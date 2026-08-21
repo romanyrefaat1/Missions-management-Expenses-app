@@ -150,7 +150,7 @@ function getThemeTransitionClipPaths(
   }
 }
 
-export const ThemeSwitcher = ({
+export const AnimatedThemeToggler = ({
   className,
   duration = 400,
   variant,
@@ -323,11 +323,7 @@ export const ThemeSwitcher = ({
       className={cn(className)}
       {...props}
     >
-      {isDark ? (
-        <Sun size={16} className="text-muted-foreground" />
-      ) : (
-        <Moon size={16} className="text-muted-foreground" />
-      )}
+      {isDark ? <Sun /> : <Moon />}
       <span className="sr-only">Toggle theme</span>
     </button>
   )

@@ -12,7 +12,7 @@ export default function LayoutPadding({
 
   const isAuthPage =
     pathname === "/auth/login" ||
-    pathname === "/auth/sign-up";
+    pathname === "/auth/sign-up" || pathname === "/";
 
   return (
     <div
