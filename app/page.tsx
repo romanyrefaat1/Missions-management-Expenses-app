@@ -241,10 +241,10 @@ function MissionCard() {
 
 function TaskFlow() {
   const tasks = [
-    ["01", "Define the idea", true],
-    ["02", "Build the landing page", true],
-    ["03", "Set up analytics", false],
-    ["04", "Launch publicly", false],
+    ["01", "Define the idea", true, "Name it and mean it"],
+    ["02", "Build the landing page", true, "First real step, first real cost"],
+    ["03", "Set up analytics", false, "Next"],
+    ["04", "Launch publicly", false, "Later"],
   ];
 
   return (
@@ -252,7 +252,7 @@ function TaskFlow() {
       <div className="absolute bottom-5 left-5 top-5 w-px bg-border" />
 
       <div className="space-y-3">
-        {tasks.map(([number, name, done], index) => (
+        {tasks.map(([number, name, done, status], index) => (
           <BlurFade
             key={number as string}
             delay={index * 0.12}
@@ -291,7 +291,7 @@ function TaskFlow() {
                 </span>
 
                 <span className="text-xs text-muted-foreground">
-                  {done ? "Done" : index === 2 ? "Next" : "Later"}
+                  {status as string}
                 </span>
               </div>
             </div>
@@ -522,7 +522,7 @@ export default function HomePage() {
                 href="#story"
                 className="text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline"
               >
-                Why Missiono
+                The idea
               </Link>
 
               <Link
@@ -580,7 +580,7 @@ export default function HomePage() {
                   onClick={() => setMobileOpen(false)}
                   className="block rounded-xl px-3 py-3 text-sm no-underline hover:bg-muted hover:no-underline"
                 >
-                  Why Missiono
+                  The idea
                 </Link>
 
                 <Link
@@ -687,16 +687,15 @@ export default function HomePage() {
                   you keep
                   <br />
                   <span className="text-primary">
-                    thinking about.
+                    putting off.
                   </span>
                 </h1>
               </BlurFade>
 
               <BlurFade delay={0.2} inView>
                 <p className="mt-8 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
-                  Missiono turns ambitious goals into missions — with
-                  the steps, budget, and momentum to actually finish
-                  them.
+                  Turn it into a mission with a budget, concrete
+                  steps, and one thing to do next.
                 </p>
               </BlurFade>
 
@@ -732,7 +731,7 @@ export default function HomePage() {
               <BlurFade delay={0.4} inView>
                 <div className="mt-9 flex items-center gap-3 text-xs text-muted-foreground">
                   <Check className="h-3.5 w-3.5 text-primary" />
-                  Missions, tasks, budgets and progress in one place.
+                  Free to start. No card required.
                 </div>
               </BlurFade>
             </div>
@@ -775,19 +774,19 @@ export default function HomePage() {
 
           <BlurFade inView>
             <h2 className="font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-foreground sm:text-7xl lg:text-8xl">
-              A goal is vague.
+              A goal says "get fit."
               <br />
               <span className="text-primary">
-                A mission isn't.
+                A mission says what that costs.
               </span>
             </h2>
           </BlurFade>
 
           <BlurFade delay={0.15} inView>
             <p className="mx-auto mt-8 max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
-              Give your goal a name. Give it a budget. Give it a next
-              step. Missiono turns something you want to do into
-              something you can actually move through.
+              Missiono turns what you want to do into a sequence of
+              steps — each one with a price on it. Not a to-do list.
+              A plan you can actually afford to finish.
             </p>
           </BlurFade>
 
@@ -805,12 +804,12 @@ export default function HomePage() {
               <SectionEyebrow>How it works</SectionEyebrow>
 
               <h2 className="max-w-md font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl">
-                Big things become manageable one step at a time.
+                Every step gets a name, a price, and a place in line.
               </h2>
 
               <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                Missiono gives every goal a structure without making
-                the process feel complicated.
+                Add a task, say what it'll cost, and mark it done when
+                it's done. That's the whole interface.
               </p>
             </div>
 
@@ -826,25 +825,23 @@ export default function HomePage() {
             <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr]">
               <div>
                 <SectionEyebrow>
-                  Everything in context
+                  The whole mission, in one place
                 </SectionEyebrow>
 
                 <h2 className="font-heading text-4xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl">
-                  Your mission has a home.
+                  No notes app for the plan. No spreadsheet for the money.
                 </h2>
 
                 <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground">
-                  See the objective, progress, tasks, budget, and
-                  current state without jumping between different
-                  tools.
+                  The objective, the budget, the tasks, and what's
+                  left to do — on one page, not spread across three
+                  apps.
                 </p>
 
                 <div className="mt-8 space-y-3">
                   {[
-                    "Create and organize missions",
-                    "Group tasks by their current state",
-                    "Search and filter instantly",
-                    "Switch between missions effortlessly",
+                    "Tasks grouped by what's actually done",
+                    "Switch between missions without losing your place",
                   ].map((item) => (
                     <div
                       key={item}
@@ -879,17 +876,18 @@ export default function HomePage() {
               </SectionEyebrow>
 
               <h2 className="max-w-2xl font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.05em] text-foreground sm:text-7xl">
-                Know what you're
+                Every mission has a budget.
                 <br />
                 <span className="text-primary">
-                  putting into it.
+                  Every step has a price.
                 </span>
               </h2>
 
               <p className="mt-7 max-w-xl text-base leading-8 text-muted-foreground">
-                Tasks aren't just checkboxes. They can carry expected
-                and actual costs, giving you a living picture of the
-                money behind your mission.
+                "Set up analytics" costs $24. "Launch publicly" costs
+                $120. Price each step before you take it, and you'll
+                always know how much of your mission is left to fund
+                — not just how much is left to do.
               </p>
 
               <div className="mt-8 grid gap-3 sm:grid-cols-2">
@@ -901,8 +899,9 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-2 text-xs leading-6 text-muted-foreground">
-                    Plan what something should cost, then record what
-                    it actually did.
+                    Estimate the cost before you commit. Record the
+                    real number after. Watch the gap close as your
+                    plan gets sharper.
                   </p>
                 </div>
 
@@ -914,8 +913,9 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-2 text-xs leading-6 text-muted-foreground">
-                    Know how much of your mission budget is still
-                    available.
+                    No end-of-month surprise. See what's spent and
+                    what's still available, in real time, next to the
+                    step it paid for.
                   </p>
                 </div>
               </div>
@@ -940,24 +940,24 @@ export default function HomePage() {
               </div>
 
               <h2 className="max-w-2xl font-heading text-5xl font-semibold leading-[0.96] tracking-[-0.05em] sm:text-7xl">
-                Stop managing.
+                Planning is not the hard part.
                 <br />
                 <span className="text-blue-300">
-                  Start doing.
+                  Doing it on a Tuesday is.
                 </span>
               </h2>
 
               <p className="mt-7 max-w-xl text-base leading-8 text-white/50">
-                When it's time to actually do the work, Missiono gets
-                out of your way. Follow one step, record what you paid,
-                complete it, and move forward.
+                When it's time to actually work, Missiono strips away
+                everything but what's in front of you: the current
+                step, what it costs, and what's next after.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-2">
                 {[
                   "Current step",
+                  "What it costs",
                   "Progress",
-                  "Paid price",
                   "Up next",
                 ].map((item) => (
                   <span
@@ -990,14 +990,14 @@ export default function HomePage() {
         <div className="mx-auto max-w-6xl">
           <div className="max-w-2xl">
             <SectionEyebrow>
-              Built for momentum
+              Everything a mission needs
             </SectionEyebrow>
 
             <h2 className="font-heading text-5xl font-semibold leading-[0.98] tracking-[-0.05em] sm:text-7xl">
-              Everything you need
+              What's inside
               <br />
               <span className="text-primary">
-                to move.
+                every mission.
               </span>
             </h2>
           </div>
@@ -1019,9 +1019,8 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                    Define the destination before you start moving.
-                    Give your mission a name, description, state, and
-                    budget.
+                    Give it a name, a description, and a budget before
+                    you take the first step.
                   </p>
                 </div>
               </div>
@@ -1041,8 +1040,9 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                    Break the mission into clear steps and know what
-                    comes next.
+                    Every mission breaks down into steps you can
+                    actually finish today. No step is too small to
+                    count.
                   </p>
                 </div>
               </div>
@@ -1062,8 +1062,8 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-2 text-sm leading-7 text-muted-foreground">
-                    See expected, paid, spent, and remaining amounts
-                    as the mission changes.
+                    Expected, spent, and remaining — attached to the
+                    step it belongs to, not buried in a separate app.
                   </p>
                 </div>
               </div>
@@ -1085,9 +1085,9 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                    When you're ready to execute, On The Go gives you
-                    only what matters: the current step, what you paid,
-                    and what comes next.
+                    Stop managing the mission and start running it. On
+                    The Go gives you only the current step, its cost,
+                    and what's next.
                   </p>
                 </div>
               </div>
@@ -1100,39 +1100,48 @@ export default function HomePage() {
       <section className="border-y bg-muted/20 px-4 py-28 sm:px-6 sm:py-40">
         <div className="mx-auto max-w-5xl text-center">
           <SectionEyebrow>
-            One direction
+            From idea to done
           </SectionEyebrow>
 
-          <h2 className="font-heading text-5xl font-semibold leading-[0.95] tracking-[-0.055em] sm:text-7xl">
-            Plan.
+          <h2 className=" flex flex-col items-center justify-center align-center md:flex-row gap-2 font-heading text-5xl font-semibold leading-[0.95] tracking-[-0.055em] sm:text-7xl">
+            <span>
+              Plan.
             <span className="mx-2 text-primary">↗</span>
+            </span>
+            <span>
             Execute.
             <span className="mx-2 text-primary">↗</span>
+            </span>
+            <span>
             Complete.
+            <span className="mx-2 text-primary">↗</span>
+            </span>
           </h2>
 
           <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-muted-foreground">
-            Missiono isn't trying to manage every part of your life.
-            It's here to help you take something that matters and move
-            it forward.
+            Not your whole life — just the handful of things that
+            actually matter to you right now.
           </p>
 
-          <div className="mx-auto mt-16 max-w-3xl">
+          {/* <div className="mx-auto mt-16 max-w-3xl">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {[
                 {
                   number: "01",
                   title: "Plan",
+                  desc: "Name it, budget it, break it down",
                   icon: Compass,
                 },
                 {
                   number: "02",
                   title: "Execute",
+                  desc: "One step at a time, cost included",
                   icon: Play,
                 },
                 {
                   number: "03",
                   title: "Complete",
+                  desc: "Actually finished, not just archived.",
                   icon: CheckCircle2,
                 },
               ].map((item, index) => {
@@ -1158,12 +1167,16 @@ export default function HomePage() {
                       <div className="mt-10 font-heading text-2xl font-semibold text-foreground">
                         {item.title}
                       </div>
+
+                      <p className="mt-2 text-xs leading-6 text-muted-foreground">
+                        {item.desc}
+                      </p>
                     </div>
                   </BlurFade>
                 );
               })}
             </div>
-          </div>
+          </div> */}
 
           <ArrowMark className="mt-14 justify-center" />
         </div>
@@ -1180,14 +1193,16 @@ export default function HomePage() {
             </div>
 
             <h2 className="mt-8 font-heading text-6xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-8xl">
-              So, what's
+              So — what's
               <br />
               the mission?
             </h2>
 
             <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
-              Whatever you've been planning, putting off, or dreaming
-              about — give it a destination and a next step.
+              The side project. The certification. The trip you've
+              been pricing out for a year. Give it a name, a budget,
+              and a next step — and find out what happens when
+              "someday" has a plan behind it.
             </p>
 
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -1231,7 +1246,7 @@ export default function HomePage() {
               href="#story"
               className="no-underline hover:no-underline"
             >
-              Why Missiono
+              The idea
             </Link>
 
             <Link
