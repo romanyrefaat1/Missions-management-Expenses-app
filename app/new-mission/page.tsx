@@ -142,11 +142,11 @@ function NewMissionForm() {
   };
 
   return (
-    <main className="min-h-screen px-6 py-8 lg:px-10 lg:py-10">
+    <main className="min-h-screen px-0 py-8 lg:px-10 lg:py-10">
       <div className="mx-auto w-full max-w-3xl">
         {/* Header */}
         <div className="mb-10">
-          <h1 className="font-heading text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 className="font-heading font-bold tracking-tight">
             {
             
             !isEdit && allMissions.length === 0 ? (

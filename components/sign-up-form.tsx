@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AlertCircle } from "lucide-react";
 import { useTheme } from "next-themes";
+import Logo from "./logo";
 
 export function SignUpForm({
   className,
@@ -94,13 +95,6 @@ export function SignUpForm({
   // Illustration: light theme -> sign-up.png, dark theme -> sign-up-darkmode.jpg
   const illustrationSrc =
     !mounted || theme === "light" ? "/sign-up.png" : "/sign-up-darkmode.jpg";
-
-  // Logo: needs to contrast with the background it sits on.
-  // Light background -> dark text logo. Dark background -> light text logo.
-  const logoSrc =
-    !mounted || theme === "light"
-      ? "/logo-dark-text-no-bg.png"
-      : "/logo-light-text-no-bg.png";
 
   const form = (
     <form onSubmit={handleSignUp}>
@@ -227,13 +221,7 @@ export function SignUpForm({
           {/* Brand */}
           <div className="absolute left-8 top-8 z-10">
             <Link href="/">
-              <Image
-                src={logoSrc}
-                alt="Missionooo"
-                width={140}
-                height={40}
-                priority
-              />
+              <Logo />
             </Link>
           </div>
 
@@ -344,13 +332,7 @@ export function SignUpForm({
           {/* Logo */}
           <div className="absolute left-0 top-6 z-10">
             <Link href="/">
-              <Image
-                src={logoSrc}
-                alt="Missionooo"
-                width={140}
-                height={40}
-                priority
-              />
+              <Logo />
             </Link>
           </div>
         </div>
