@@ -1313,59 +1313,91 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="relative overflow-hidden px-4 py-32 sm:px-6 sm:py-48">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.05] blur-3xl" />
+    <section className="relative overflow-hidden px-4 py-32 sm:px-6 sm:py-48">
+  <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.05] blur-3xl" />
 
-        <div className="relative mx-auto max-w-4xl text-center">
-          <BlurFade inView>
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-card shadow-sm">
-              <Target className="h-5 w-5 text-primary" />
-            </div>
+  <div className="relative mx-auto max-w-4xl text-center">
+    <BlurFade inView>
+      {/* <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-card shadow-sm">
+        <Target className="h-5 w-5 text-primary" />
+      </div> */}
 
-            <h2 className="mt-8 font-heading text-6xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-8xl">
-              So — what's
-              <br />
-              the mission?
-            </h2>
+      {session?.user ? (
+        <>
+          <h2 className="mt-8 font-heading text-6xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-8xl">
+            Ready to get
+            <br />
+            <span className="text-primary">back to it?</span>
+          </h2>
 
-            <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
-              The side project. The certification. The trip you've
-              been pricing out for a year. Give it a name, a budget,
-              and a next step — and find out what happens when
-              "someday" has a plan behind it.
-            </p>
+          <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
+            Your missions are waiting. Keep moving forward,
+            one step at a time.
+          </p>
 
-            <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link
-                    href="/auth/sign-up"
-                    onClick={() => setMobileOpen(false)}
-                    className="block no-underline hover:no-underline"
-                  >
-                    <ShimmerButton
-                      background="hsl(var(--primary))"
-                      shimmerColor="#ffffff"
-                      className="flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-primary-foreground"
-                    >
-                      Start a mission
-                      <ArrowUpRight className="h-4 w-4" />
-                    </ShimmerButton>
-                  </Link>
-
-              <Button
-                asChild
-                variant="ghost"
-                className="h-12"
+          <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/home"
+              className="block no-underline hover:no-underline"
+            >
+              <ShimmerButton
+                background="hsl(var(--primary))"
+                shimmerColor="#ffffff"
+                className="flex h-12 items-center justify-center gap-2 rounded-xl px-7 text-sm font-semibold text-primary-foreground"
               >
-                <Link href="/auth/login">
-                  I already have an account
-                </Link>
-              </Button>
-            </div>
+                Go to your missions
+                <ArrowUpRight className="h-4 w-4" />
+              </ShimmerButton>
+            </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <h2 className="mt-8 font-heading text-6xl font-semibold leading-[0.92] tracking-[-0.06em] sm:text-8xl">
+            So — what's
+            <br />
+            <span className="text-primary">the mission?</span>
+          </h2>
 
-            <ArrowMark className="mt-12 justify-center" />
-          </BlurFade>
-        </div>
-      </section>
+          <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
+            The side project. The certification. The trip you've
+            been pricing out for a year. Give it a name, a budget,
+            and a next step — and find out what happens when
+            "someday" has a plan behind it.
+          </p>
+
+          <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/auth/sign-up"
+              className="block no-underline hover:no-underline"
+            >
+              <ShimmerButton
+                background="hsl(var(--primary))"
+                shimmerColor="#ffffff"
+                className="flex h-12 items-center justify-center gap-2 rounded-xl px-7 text-sm font-semibold text-primary-foreground"
+              >
+                Start a mission
+                <ArrowUpRight className="h-4 w-4" />
+              </ShimmerButton>
+            </Link>
+
+            <Button
+              asChild
+              variant="ghost"
+              className="h-12"
+            >
+              <Link href="/auth/login">
+                I already have an account
+              </Link>
+            </Button>
+          </div>
+        </>
+      )}
+
+      <ArrowMark className="mt-12 justify-center" />
+    </BlurFade>
+  </div>
+</section>
 
       {/* FOOTER */}
       <footer className="border-t">
