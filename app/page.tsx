@@ -500,117 +500,228 @@ export default function HomePage() {
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       {/* NAV */}
-      <header className="fixed inset-x-0 top-0 z-50">
-        <div className="mx-auto max-w-6xl px-4 pt-3 sm:px-6">
-          <nav
-            className={`flex h-14 items-center justify-between rounded-2xl border px-4 transition-all duration-300 sm:px-5 ${
-              scrolled
-                ? "border-border/70 bg-background/90 shadow-sm backdrop-blur-xl"
-                : "border-transparent bg-transparent"
-            }`}
-          >
-            <Logo />
+     {/* NAV */}
+<header className="fixed inset-x-0 top-0 z-50">
+  <div className="mx-auto max-w-6xl px-4 pt-3 sm:px-6">
+    <nav
+      className={`flex h-14 items-center justify-between rounded-2xl border px-3 transition-all duration-300 sm:px-5 ${
+        scrolled
+          ? "border-border/70 bg-background/90 shadow-sm backdrop-blur-xl"
+          : "border-transparent bg-transparent"
+      }`}
+    >
+      {/* Logo */}
+      <Link
+        href="/"
+        className="shrink-0 no-underline hover:no-underline"
+        onClick={() => setMobileOpen(false)}
+      >
+        <Logo />
+      </Link>
 
-            <div className="hidden items-center gap-7 md:flex">
+      {/* Desktop navigation */}
+      <div className="hidden items-center gap-7 md:flex">
+        <Link
+          href="#story"
+          className="text-sm text-muted-foreground no-underline transition-colors hover:text-foreground hover:no-underline"
+        >
+          The idea
+        </Link>
+
+        <Link
+          href="#budget"
+          className="text-sm text-muted-foreground no-underline transition-colors hover:text-foreground hover:no-underline"
+        >
+          Budget
+        </Link>
+
+        <Link
+          href="#on-the-go"
+          className="text-sm text-muted-foreground no-underline transition-colors hover:text-foreground hover:no-underline"
+        >
+          On The Go
+        </Link>
+
+        <ThemeSwitcher isText={true} />
+      </div>
+
+      {/* Desktop auth/actions */}
+      <div className="hidden items-center gap-2 md:flex">
+        {!sessionLoading && (
+          <>
+            {session?.user ? (
+              <AuthButtonClient
+                buttonVariant={{
+                  logout: {
+                    variant: "link",
+                  },
+                }}
+              />
+            ) : (
               <Link
-                href="#story"
-                className="text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline"
+                href="/auth/login"
+                className="px-3 py-2 text-sm text-muted-foreground no-underline transition-colors hover:text-foreground hover:no-underline"
               >
-                The idea
+                Sign in
               </Link>
+            )}
 
-              <Link
-                href="#budget"
-                className="text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline"
-              >
-                Budget
-              </Link>
-
-              <Link
-                href="#on-the-go"
-                className="text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline"
-              >
-                On The Go
-              </Link>
-
-              <span
-                className=" flex gap-1 justify-center align-center text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline transition"
-              >
-                <ThemeSwitcher isText={true}/>
-              </span>
-            </div>
-
-            <div className="hidden items-center gap-2 md:flex">
-  {!sessionLoading && (session?.user ? (
-    <AuthButtonClient buttonVariant={{logout: {variant: "link"}}} />
-  ) : (
-    <Link href="/auth/login" className="px-3 py-2 text-sm text-muted-foreground no-underline hover:text-foreground hover:no-underline">
-      Sign in
-    </Link>
-  ))}
-
-  <Button asChild size="sm" className="rounded-lg">
-    <Link href={session?.user ? "/home" : "/auth/sign-up"} className="no-underline hover:no-underline">
-      {session?.user ? "Go to app" : "Start a mission"}
-      <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-    </Link>
-  </Button>
-</div>
-
-            <button
-              className="rounded-lg p-2 md:hidden"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle menu"
+            {/* IMPORTANT:
+                Link wraps the ShimmerButton instead of the other way around.
+                This makes the navigation work reliably.
+            */}
+            <Link
+              href={session?.user ? "/home" : "/auth/sign-up"}
+              className="no-underline hover:no-underline"
             >
-              {mobileOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </button>
-          </nav>
+              <ShimmerButton
+                background="hsl(var(--primary))"
+                shimmerColor="#ffffff"
+                className="flex h-9 items-center gap-1.5 rounded-lg px-4 text-sm font-semibold text-primary-foreground"
+              >
+                {session?.user ? "Go to app" : "Start a mission"}
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </ShimmerButton>
+            </Link>
+          </>
+        )}
+      </div>
 
-          {mobileOpen && (
-            <div className="mt-2 rounded-2xl border bg-background/95 p-3 shadow-xl backdrop-blur-xl md:hidden">
-              <div className="space-y-1">
-                <Link
-                  href="#story"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-xl px-3 py-3 text-sm no-underline hover:bg-muted hover:no-underline"
-                >
-                  The idea
-                </Link>
+      {/* Mobile menu button */}
+      <button
+        type="button"
+        className="flex h-10 w-10 items-center justify-center rounded-xl transition-colors hover:bg-muted md:hidden"
+        onClick={() => setMobileOpen((open) => !open)}
+        aria-label={mobileOpen ? "Close menu" : "Open menu"}
+        aria-expanded={mobileOpen}
+      >
+        {mobileOpen ? (
+          <X className="h-5 w-5" />
+        ) : (
+          <Menu className="h-5 w-5" />
+        )}
+      </button>
+    </nav>
 
-                <Link
-                  href="#budget"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-xl px-3 py-3 text-sm no-underline hover:bg-muted hover:no-underline"
-                >
-                  Budget
-                </Link>
+    {/* Mobile menu */}
+    {mobileOpen && (
+      <div className="mt-2 overflow-hidden rounded-2xl border border-border/70 bg-background/95 shadow-xl backdrop-blur-xl md:hidden">
+        <div className="p-2">
+          {/* Navigation links */}
+          <div className="space-y-1">
+            <Link
+              href="#story"
+              onClick={() => setMobileOpen(false)}
+              className="flex min-h-11 items-center rounded-xl px-3 text-sm text-foreground no-underline transition-colors hover:bg-muted hover:no-underline"
+            >
+              The idea
+            </Link>
 
-                <Link
-                  href="#on-the-go"
-                  onClick={() => setMobileOpen(false)}
-                  className="block rounded-xl px-3 py-3 text-sm no-underline hover:bg-muted hover:no-underline"
-                >
-                  On The Go
-                </Link>
-              </div>
+            <Link
+              href="#budget"
+              onClick={() => setMobileOpen(false)}
+              className="flex min-h-11 items-center rounded-xl px-3 text-sm text-foreground no-underline transition-colors hover:bg-muted hover:no-underline"
+            >
+              Budget
+            </Link>
 
-              <div className="mt-2 grid grid-cols-2 gap-2 border-t pt-3">
-                <Button asChild variant="outline">
-                  <Link href="/auth/login">Sign in</Link>
-                </Button>
+            <Link
+              href="#on-the-go"
+              onClick={() => setMobileOpen(false)}
+              className="flex min-h-11 items-center rounded-xl px-3 text-sm text-foreground no-underline transition-colors hover:bg-muted hover:no-underline"
+            >
+              On The Go
+            </Link>
+          </div>
 
-                <Button asChild>
-                  <Link href="/auth/sign-up">Start</Link>
-                </Button>
-              </div>
+          {/* Theme */}
+          <div className="my-2 border-t border-border/60" />
+
+          <div className="flex min-h-12 items-center justify-between rounded-xl px-3">
+            <span className="text-sm text-muted-foreground">
+              Theme
+            </span>
+
+            <div className="flex shrink-0 items-center">
+              <ThemeSwitcher isText={true} />
             </div>
+          </div>
+
+          {/* Auth actions */}
+          {!sessionLoading && (
+            <>
+              <div className="my-2 border-t border-border/60" />
+
+              {session?.user ? (
+                <div className="space-y-2 p-1">
+                  {/* Go to app */}
+                  <Link
+                    href="/home"
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full no-underline hover:no-underline"
+                  >
+                    <ShimmerButton
+                      background="hsl(var(--primary))"
+                      shimmerColor="#ffffff"
+                      className="flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-primary-foreground"
+                    >
+                      Go to app
+                      <ArrowUpRight className="h-4 w-4" />
+                    </ShimmerButton>
+                  </Link>
+
+                  {/* Logout */}
+                  <div className="w-full [&>button]:h-11 [&>button]:w-full [&>button]:rounded-xl">
+                    <AuthButtonClient
+                      buttonVariant={{
+                        logout: {
+                          variant: "outline",
+                        },
+                      }}
+                      isLogoutRoute={false}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 p-1">
+                  {/* Sign in */}
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-11 w-full rounded-xl"
+                  >
+                    <Link
+                      href="/auth/login"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Sign in
+                    </Link>
+                  </Button>
+
+                  {/* Start mission */}
+                  <Link
+                    href="/auth/sign-up"
+                    onClick={() => setMobileOpen(false)}
+                    className="block w-full no-underline hover:no-underline"
+                  >
+                    <ShimmerButton
+                      background="hsl(var(--primary))"
+                      shimmerColor="#ffffff"
+                      className="flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-primary-foreground"
+                    >
+                      Start a mission
+                      <ArrowUpRight className="h-4 w-4" />
+                    </ShimmerButton>
+                  </Link>
+                </div>
+              )}
+            </>
           )}
         </div>
-      </header>
+      </div>
+    )}
+  </div>
+</header>
 
       {/* HERO */}
       <section className="relative min-h-[850px] overflow-hidden px-4 pb-24 pt-36 sm:px-6 sm:pb-36 sm:pt-44">

@@ -15,6 +15,7 @@ type ButtonVariantProp = {
 export function AuthButtonClient({
   style,
   buttonVariant,
+  isLogoutRoute = true
 }: {
   style?: "sheet" | null;
   buttonVariant?: {
@@ -22,6 +23,7 @@ export function AuthButtonClient({
     signUp?: ButtonVariantProp;
     login?: ButtonVariantProp;
   };
+  isLogoutRoute?: boolean
 }) {
   const { loading, session, error } = useSession();
 
@@ -58,6 +60,7 @@ export function AuthButtonClient({
       <LogoutButton
         variant={buttonVariant?.logout?.variant}
         size={buttonVariant?.logout?.size}
+        isLogoutRoute={isLogoutRoute}
       />
     </div>
   ) : (

@@ -10,13 +10,16 @@ export function LogoutButton({
   variant="secondary",
   size,
   className="bg-transparent",
+  isLogoutRoute=true
 }: React.ComponentProps<typeof Button>) {
   const router = useRouter();
 
   const logout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/auth/login");
+    if (isLogoutRoute ){
+      // router.push("/auth/login");
+    }
   };
 
   return (
