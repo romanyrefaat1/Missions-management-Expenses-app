@@ -32,11 +32,6 @@ export default function EditBudgetButton({
     const formData = new FormData(e.currentTarget);
     const budget = formData.get("budget");
 
-    console.log({
-      missionId,
-      budget,
-    });
-
     // Update budget in Supabase here
     const supabase = createClient();
     const { error, data } = await supabase
@@ -45,22 +40,14 @@ export default function EditBudgetButton({
       .eq("id", missionId)
       .select();
 
-    console.log("UPDATE RESULT:", {
-      missionId,
-      budget,
-      error,
-      data,
-    });
 
     if (error) {
-      console.log("Error updating current budget", error.message);
+      console.error("Error updating current budget", error.message);
       toast.error(`Error updating mission: ${error.message}`);
       toast.dismiss(toastLoading);
 
       return;
     }
-
-    console.log("Data", data);
 
     toast.dismiss(toastLoading);
     toast.success("Budget updated succcessfully");

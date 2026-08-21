@@ -30,7 +30,7 @@ export function DeleteMissionDialog({ missionId }: { missionId: string }) {
   const handleSubmit = async ()=> {
     if (inputValue !== mission.name) {
         setError("What you typed does not match the mission;s name")
-        console.log("Input doesnt match")
+        console.error("Input doesnt match")
         return;
     }
 

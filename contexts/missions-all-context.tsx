@@ -173,7 +173,7 @@ export function MissionsAllProvider({
         )
         .subscribe((status) => {
           if (status === "SUBSCRIBED") {
-            console.log("Subscribed to missions realtime");
+            // console.log("Subscribed to missions realtime");
           }
         });
     };
