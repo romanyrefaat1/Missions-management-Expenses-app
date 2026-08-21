@@ -810,19 +810,20 @@ export default function HomePage() {
 
               <BlurFade delay={0.3} inView>
                 <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
-                  <ShimmerButton
-                    background="hsl(var(--primary))"
-                    shimmerColor="#ffffff"
-                    className="h-12 rounded-xl px-6"
+                  <Link
+                    href="/auth/sign-up"
+                    onClick={() => setMobileOpen(false)}
+                    className="blockF no-underline hover:no-underline"
                   >
-                    <Link
-                      href="/auth/sign-up"
-                      className="flex items-center gap-2 text-sm font-semibold text-primary-foreground no-underline hover:no-underline"
+                    <ShimmerButton
+                      background="hsl(var(--primary))"
+                      shimmerColor="#ffffff"
+                      className="flex h-11 items-center justify-center gap-2 rounded-xl text-sm font-semibold text-primary-foreground"
                     >
                       Start a mission
                       <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </ShimmerButton>
+                    </ShimmerButton>
+                  </Link>
 
                   <Button
                     asChild
@@ -1344,19 +1345,20 @@ export default function HomePage() {
             </p>
 
             <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <ShimmerButton
-                background="hsl(var(--primary))"
-                shimmerColor="#ffffff"
-                className="h-12 rounded-xl px-7"
-              >
-                <Link
-                  href="/auth/sign-up"
-                  className="flex items-center gap-2 text-sm font-semibold text-primary-foreground no-underline hover:no-underline"
-                >
-                  Start a mission
-                  <ArrowUpRight className="h-4 w-4" />
-                </Link>
-              </ShimmerButton>
+              <Link
+                    href="/auth/sign-up"
+                    onClick={() => setMobileOpen(false)}
+                    className="block no-underline hover:no-underline"
+                  >
+                    <ShimmerButton
+                      background="hsl(var(--primary))"
+                      shimmerColor="#ffffff"
+                      className="flex h-11 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-primary-foreground"
+                    >
+                      Start a mission
+                      <ArrowUpRight className="h-4 w-4" />
+                    </ShimmerButton>
+                  </Link>
 
               <Button
                 asChild
