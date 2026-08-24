@@ -3,6 +3,17 @@ import { NextResponse, type NextRequest } from "next/server";
 import { hasEnvVars } from "../utils";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // Don't run auth redirects on SEO files
+  if (
+    pathname === "/sitemap.xml" ||
+    pathname === "/robots.txt" ||
+    pathname.startsWith("/google")
+  ) {
+    return NextResponse.next();
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -23,12 +34,14 @@ export async function updateSession(request: NextRequest) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
           );
+
           supabaseResponse = NextResponse.next({
             request,
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options),
-          );
+
+          cookiesToSet.forEach(({ name, value, options }) => {
+            supabaseResponse.cookies.set(name, value, options);
+          });
         },
       },
     },
@@ -37,19 +50,20 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  const isAuthPath = request.nextUrl.pathname.startsWith("/auth");
+  const isAuthPath = pathname.startsWith("/auth");
 
-  // Logged-in users shouldn't see /auth or any /auth/* routes
+  // Logged-in users shouldn't see /auth routes
   if (user && isAuthPath) {
     const url = request.nextUrl.clone();
-    url.pathname = "/"; // or wherever your logged-in home is, e.g. "/dashboard"
+    url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
+  // Protect app routes
   if (
-    request.nextUrl.pathname !== "/" &&
+    pathname !== "/" &&
     !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
+    !pathname.startsWith("/login") &&
     !isAuthPath
   ) {
     const url = request.nextUrl.clone();
