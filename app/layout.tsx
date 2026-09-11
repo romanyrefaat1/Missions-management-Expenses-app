@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 
+import { Analytics } from "@vercel/analytics/next"
+
 import "./globals.css";
 
 import { SessionProvider } from "@/contexts/session-context";
@@ -118,6 +120,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.className} ${lora.variable} antialiased bg-background max-w-screen overflow-x-clip`}
       >
+        <Analytics />
         <LayoutPadding>
           <div id="first-div-inside-body" className="w-full min-w-0">
             <SessionProvider>
