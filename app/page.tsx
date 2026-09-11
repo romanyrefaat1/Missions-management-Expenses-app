@@ -1400,38 +1400,48 @@ export default function HomePage() {
 </section>
 
       {/* FOOTER */}
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between">
-          <Logo />
+<footer className="border-t">
+  <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between">
+    <Logo />
 
-          <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
-            <Link
-              href="#story"
-              className="no-underline hover:no-underline"
-            >
-              The idea
-            </Link>
+    <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
+      <Link
+        href="#story"
+        className="no-underline hover:no-underline"
+      >
+        The idea
+      </Link>
 
-            <Link
-              href="#budget"
-              className="no-underline hover:no-underline"
-            >
-              Budget
-            </Link>
+      <Link
+        href="#budget"
+        className="no-underline hover:no-underline"
+      >
+        Budget
+      </Link>
 
-            <Link
-              href="#on-the-go"
-              className="no-underline hover:no-underline"
-            >
-              On The Go
-            </Link>
+      <Link
+        href="#on-the-go"
+        className="no-underline hover:no-underline"
+      >
+        On The Go
+      </Link>
 
-            <span>
-              © {new Date().getFullYear()} Missiono
-            </span>
-          </div>
-        </div>
-      </footer>
+      <span>© {new Date().getFullYear()} Missiono</span>
+
+      <span>
+        Made by{" "}
+        <a
+          href="https://romani.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-foreground no-underline hover:underline"
+        >
+          Romani
+        </a>
+      </span>
+    </div>
+  </div>
+</footer>
     </main>
   );
 }
